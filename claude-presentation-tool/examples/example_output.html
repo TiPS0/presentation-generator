@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optimized Roadmap for LLM Platform Implementation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            margin: 0;
+            padding: 12px;
+            background-color: #fcfcfc;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        h1 {
+            margin: 0;
+            padding: 10px 0;
+            font-size: 26px;
+        }
+        
+        .kpi-section {
+            background-color: #fffbe6;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: #262626;
+        }
+        
+        .kpi-cards {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .kpi-card {
+            background-color: white;
+            border-radius: 6px;
+            padding: 12px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            border-left: 3px solid #1890ff;
+            flex: 1;
+        }
+        
+        .kpi-card h3 {
+            margin: 0 0 6px 0;
+            font-size: 15px;
+            color: #1890ff;
+        }
+        
+        .kpi-card p {
+            margin: 0;
+            font-size: 13px;
+            color: #595959;
+            line-height: 1.4;
+        }
+        
+        .kpi-highlight {
+            font-weight: bold;
+            color: #1890ff;
+        }
+        
+        .kpi-bullets {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .kpi-bullet {
+            background-color: #e6f7ff;
+            color: #1890ff;
+            border-radius: 16px;
+            padding: 4px 10px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .roadmap-section {
+            background-color: #fffbe6;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+        }
+        
+        .timeline-container {
+            margin-top: 20px;
+            position: relative;
+        }
+        
+        .timeline-track {
+            position: relative;
+            height: 3px;
+            background-color: #e8e8e8;
+            margin: 0 20px 15px;
+        }
+        
+        .timeline-months {
+            display: flex;
+            justify-content: space-between;
+            margin: 0 20px 5px;
+            position: relative;
+        }
+        
+        .month-marker {
+            font-size: 11px;
+            color: #8c8c8c;
+            text-align: center;
+        }
+        
+        .phases {
+            display: flex;
+            gap: 10px;
+            margin: 0 20px;
+        }
+        
+        .phase {
+            flex: 1;
+            position: relative;
+        }
+        
+        .phase-bar {
+            height: 32px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10px;
+            color: white;
+            font-weight: 500;
+            font-size: 13px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 8px;
+        }
+        
+        .phase-duration {
+            font-size: 11px;
+            opacity: 0.9;
+        }
+        
+        .phase-1 { background-color: #1890ff; }
+        .phase-2 { background-color: #13c2c2; }
+        .phase-3 { background-color: #722ed1; }
+        .phase-4 { background-color: #eb2f96; }
+        
+        .phase-content {
+            background-color: white;
+            border-radius: 6px;
+            padding: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            min-height: 140px;
+            font-size: 12px;
+            color: #595959;
+        }
+        
+        .phase-details {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .phase-details li {
+            margin-bottom: 6px;
+            padding-left: 14px;
+            position: relative;
+        }
+        
+        .phase-details li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #1890ff;
+        }
+        
+        .phase-1 .phase-details li:before { color: #1890ff; }
+        .phase-2 .phase-details li:before { color: #13c2c2; }
+        .phase-3 .phase-details li:before { color: #722ed1; }
+        .phase-4 .phase-details li:before { color: #eb2f96; }
+        
+        .budget-note {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            border-left: 3px solid #faad14;
+            font-style: italic;
+            color: #595959;
+            font-size: 12px;
+        }
+        
+        @media (max-width: 1100px) {
+            .kpi-cards {
+                flex-wrap: wrap;
+            }
+            
+            .kpi-card {
+                min-width: 200px;
+            }
+            
+            .phases {
+                flex-direction: column;
+            }
+            
+            .phase-content {
+                min-height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>LLM Platform Implementation Roadmap</h1>
+        </div>
+        
+        <div class="kpi-section">
+            <div class="section-title">Expected Key Results</div>
+            
+            <div class="kpi-cards">
+                <div class="kpi-card">
+                    <h3>Cost Savings</h3>
+                    <p><span class="kpi-highlight">40-60% cost reduction</span> for each new LLM solution after the first 3-5 implementations</p>
+                </div>
+                
+                <div class="kpi-card">
+                    <h3>TCO Reduction</h3>
+                    <p><span class="kpi-highlight">30% lower Total Cost of Ownership</span> via unified architecture and avoiding duplication</p>
+                </div>
+                
+                <div class="kpi-card">
+                    <h3>Staff Optimization</h3>
+                    <p><span class="kpi-highlight">15-20% FTE capacity released</span> scalable without proportional hiring needs</p>
+                </div>
+                
+                <div class="kpi-card">
+                    <h3>Implementation Speed</h3>
+                    <p><span class="kpi-highlight">65-75% faster time-to-market</span> for new AI projects thanks to ready infrastructure</p>
+                </div>
+                
+                <div class="kpi-card">
+                    <h3>Business Impact</h3>
+                    <p><span class="kpi-highlight">250-300% ROI</span> within 18-24 months through a comprehensive approach</p>
+                </div>
+            </div>
+            
+            <div class="kpi-bullets">
+                <div class="kpi-bullet">NPS increase by 10-15 points</div>
+                <div class="kpi-bullet">Sales conversion up by 20-30%</div>
+                <div class="kpi-bullet">OpEx reduction by 25-35%</div>
+                <div class="kpi-bullet">Automation of 90% typical inquiries</div>
+            </div>
+        </div>
+        
+        <div class="roadmap-section">
+            <div class="section-title">Project Phases</div>
+            
+            <div class="timeline-container">
+                <div class="timeline-months">
+                    <div class="month-marker">Start</div>
+                    <div class="month-marker">3 mo</div>
+                    <div class="month-marker">6 mo</div>
+                    <div class="month-marker">9 mo</div>
+                    <div class="month-marker">12 mo</div>
+                    <div class="month-marker">18 mo</div>
+                    <div class="month-marker">24 mo</div>
+                    <div class="month-marker">36 mo</div>
+                </div>
+                
+                <div class="timeline-track"></div>
+                
+                <div class="phases">
+                    <div class="phase phase-1" style="flex-basis: 12%;">
+                        <div class="phase-bar">
+                            Phase 1: MVP
+                            <span class="phase-duration">3-4 mo</span>
+                        </div>
+                        <div class="phase-content">
+                            <ul class="phase-details">
+                                <li>L1 Chat Support (90% automation)</li>
+                                <li>Basic routing platform via LiteLLM</li>
+                                <li>API integration with 1-2 critical systems</li>
+                                <li>Budget: $50-100k</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="phase phase-2" style="flex-basis: 22%;">
+                        <div class="phase-bar">
+                            Phase 2: Foundation
+                            <span class="phase-duration">6-8 mo</span>
+                        </div>
+                        <div class="phase-content">
+                            <ul class="phase-details">
+                                <li>Full request routing platform</li>
+                                <li>Core integrations (CRM, Core Banking)</li>
+                                <li>Prompt Management System v1.0</li>
+                                <li>3-5 high-autonomy processes onboarded</li>
+                                <li>Budget: $300-500k</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="phase phase-3" style="flex-basis: 26%;">
+                        <div class="phase-bar">
+                            Phase 3: Scaling
+                            <span class="phase-duration">12-18 mo</span>
+                        </div>
+                        <div class="phase-content">
+                            <ul class="phase-details">
+                                <li>Full integration with all critical systems</li>
+                                <li>Advanced monitoring infrastructure</li>
+                                <li>Continuous model improvement loops</li>
+                                <li>Coverage of all medium-high autonomy processes</li>
+                                <li>Budget: $800k-1.2M</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="phase phase-4" style="flex-basis: 40%;">
+                        <div class="phase-bar">
+                            Phase 4: Transformation
+                            <span class="phase-duration">18-36 mo</span>
+                        </div>
+                        <div class="phase-content">
+                            <ul class="phase-details">
+                                <li>AI-native banking products</li>
+                                <li>Deep AI integration in decision making</li>
+                                <li>New AI-based interaction channels</li>
+                                <li>Hyper-personalization per client</li>
+                                <li>Budget: $1.5-2M</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="budget-note">
+                <strong>Funding Model:</strong> Budget formed via combination: 60-70% from centralized investment budget and 30-40% from beneficiary operational budgets. "Floating budget" applied with automatic allocation upon KPI achievement.
+            </div>
+        </div>
+    </div>
+</body>
+</html>
