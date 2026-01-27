@@ -3,21 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CollabX Mobile - Project Update</title>
+    <title>CollabX Mobile - Product Roadmap</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #F0943E;
-            --secondary: #2c3e50;
-            --bg: #ffffff;
-            --text: #333;
+            --primary-glow: rgba(240, 148, 62, 0.2);
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #1f2937;
+            --text-secondary: #4b5563;
+            --success: #059669;
         }
 
         body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Inter', sans-serif;
             margin: 0;
             padding: 0;
             overflow: hidden;
-            background-color: #000;
+            background-color: var(--bg);
             color: var(--text);
             height: 100vh;
             width: 100vw;
@@ -36,7 +42,6 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: var(--bg);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -44,67 +49,83 @@
             padding: 40px;
             box-sizing: border-box;
             opacity: 0;
-            transform: translateX(100px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
+            transform: scale(0.95);
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
             pointer-events: none;
             z-index: 1;
+            background: radial-gradient(circle at top right, rgba(240, 148, 62, 0.05), transparent 40%),
+                        radial-gradient(circle at bottom left, rgba(240, 148, 62, 0.05), transparent 40%);
         }
 
         .slide.active {
             opacity: 1;
-            transform: translateX(0);
+            transform: scale(1);
             pointer-events: all;
             z-index: 2;
         }
 
         .slide.exit {
             opacity: 0;
-            transform: translateX(-100px);
+            transform: scale(1.05);
+            transition-duration: 0.4s;
         }
 
-        /* Slide Content Styling */
+        /* Typography */
         h1 {
-            font-size: 3.5rem;
-            color: var(--secondary);
-            margin-bottom: 0.5rem;
+            font-size: 5rem;
+            font-weight: 800;
+            margin: 0;
+            background: linear-gradient(0deg, #fff 0%, var(--primary) 40%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -2px;
             text-align: center;
         }
 
+        .subtitle {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            margin-top: 1rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
         h2 {
-            font-size: 2.5rem;
-            color: var(--primary);
+            font-size: 3rem;
             margin-bottom: 2rem;
-            position: relative;
+            font-weight: 600;
+            letter-spacing: -1px;
         }
         
         h2::after {
             content: '';
             display: block;
-            width: 80px;
+            width: 60px;
             height: 4px;
             background: var(--primary);
-            margin: 10px auto 0;
+            margin: 15px auto 0;
             border-radius: 2px;
+            box-shadow: 0 0 15px var(--primary-glow);
         }
 
-        p {
-            font-size: 1.5rem;
-            line-height: 1.6;
-            max-width: 800px;
-            text-align: center;
-            color: #555;
-        }
-
+        /* Lists */
         ul {
-            font-size: 1.4rem;
             list-style: none;
             padding: 0;
+            font-size: 1.5rem;
+            max-width: 800px;
+            width: 100%;
         }
 
         li {
-            margin-bottom: 15px;
-            padding-left: 30px;
-            position: relative;
+            margin-bottom: 20px;
+            padding: 15px 20px;
+            background: rgba(0,0,0,0.03);
+            border-radius: 12px;
+            border: 1px solid rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
             opacity: 0;
             transform: translateY(20px);
             transition: all 0.5s ease;
@@ -115,236 +136,597 @@
             transform: translateY(0);
         }
 
-        /* Staggered animation for list items */
-        .slide.active li:nth-child(1) { transition-delay: 0.2s; }
-        .slide.active li:nth-child(2) { transition-delay: 0.3s; }
-        .slide.active li:nth-child(3) { transition-delay: 0.4s; }
-        .slide.active li:nth-child(4) { transition-delay: 0.5s; }
+        /* Staggered animation */
+        .slide.active li:nth-child(1) { transition-delay: 0.1s; }
+        .slide.active li:nth-child(2) { transition-delay: 0.2s; }
+        .slide.active li:nth-child(3) { transition-delay: 0.3s; }
+        .slide.active li:nth-child(4) { transition-delay: 0.4s; }
+        .slide.active li:nth-child(5) { transition-delay: 0.5s; }
+        .slide.active li:nth-child(6) { transition-delay: 0.6s; }
 
         li::before {
-            content: '•';
+            content: '';
             color: var(--primary);
-            font-size: 2rem;
-            position: absolute;
-            left: 0;
-            top: -5px;
+            margin-right: 15px;
+            font-weight: bold;
         }
 
-        /* Grid Layouts for specific slides */
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+        /* Timeline Styling */
+        .timeline-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
             gap: 40px;
+            margin-top: 60px;
             width: 100%;
             max-width: 1200px;
         }
 
-        .card {
-            background: #fff;
+        .phase-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(0,0,0,0.05);
+            border-radius: 16px;
             padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            border-top: 5px solid var(--primary);
+            flex: 1;
             text-align: left;
+            position: relative;
+            transition: transform 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
 
-        .card h3 {
-            color: var(--secondary);
+        .slide.active .phase-card {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .slide.active .phase-card:nth-child(1) { transition-delay: 0.2s; }
+        .slide.active .phase-card:nth-child(2) { transition-delay: 0.4s; }
+        .slide.active .phase-card:nth-child(3) { transition-delay: 0.6s; }
+
+        .phase-card.active {
+            border-color: var(--primary);
+            box-shadow: 0 0 30px rgba(240, 148, 62, 0.1);
+        }
+
+        .phase-badge {
+            display: inline-block;
+            background: rgba(0,0,0,0.05);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .phase-card.active .phase-badge {
+            background: var(--primary);
+            color: white;
+        }
+
+        .phase-card h3 {
+            margin: 0 0 10px 0;
             font-size: 1.5rem;
-            margin-top: 0;
+        }
+
+        .phase-card p {
+            color: var(--text-secondary);
+            margin: 0;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        /* Feature Grid */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            width: 100%;
+            max-width: 900px;
+            margin-top: 30px;
+        }
+
+        .feature-item {
+            background: rgba(0,0,0,0.03);
+            padding: 20px;
+            border-radius: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .feature-icon {
+            font-size: 1.5rem;
+        }
+
+        .feature-text div { font-weight: 600; margin-bottom: 5px; }
+        .feature-text span { font-size: 0.9rem; color: var(--text-secondary); }
+        
+        /* Timeline Bar on Details */
+        .timeline-bar {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding: 10px 20px;
+            background: rgba(0,0,0,0.05);
+            border-radius: 30px;
+            border: 1px solid rgba(0,0,0,0.1);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .timeline-bar strong {
+            color: var(--primary);
+            font-weight: 600;
         }
 
         /* Controls */
         .controls {
             position: absolute;
-            bottom: 30px;
-            right: 30px;
-            z-index: 100;
+            bottom: 40px;
+            right: 40px;
+            z-index: 100; /* Standard controls kept just in case, but can be removed if bubbles are enough. Keeping for prev/next buttons. */
             display: flex;
-            gap: 10px;
+            gap: 15px;
         }
 
-        button {
-            background: var(--secondary);
-            color: white;
-            border: none;
+        button.nav-btn {
+            background: rgba(0,0,0,0.1);
+            color: var(--text);
+            border: 1px solid rgba(0,0,0,0.1);
             padding: 12px 24px;
             border-radius: 30px;
-            font-size: 1rem;
+            font-size: 0.9rem;
             cursor: pointer;
-            transition: background 0.2s;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.2s;
+            font-family: inherit;
         }
 
-        button:hover {
-            background: var(--primary);
-        }
-        
-        .progress-bar {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            height: 6px;
-            background: var(--primary);
-            width: 0%;
-            transition: width 0.3s ease;
-            z-index: 100;
-        }
-
-        /* Special Slide Styles */
-        .title-slide {
-            background: linear-gradient(135deg, #FFF7E6 0%, #FFFFFF 100%);
-        }
-        
-        .timeline-box {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            max-width: 1000px;
-            margin-top: 40px;
-            position: relative;
-        }
-        
-        .timeline-box::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: #eee;
-            z-index: 0;
-            transform: translateY(-50%);
-        }
-        
-        .t-item {
-            position: relative;
-            z-index: 1;
-            background: white;
-            padding: 10px 20px;
-            border-radius: 20px;
-            border: 2px solid #eee;
-            text-align: center;
-            min-width: 120px;
-        }
-        
-        .t-item.active {
-            border-color: var(--primary);
+        button.nav-btn:hover {
             background: var(--primary);
             color: white;
+            border-color: var(--primary);
         }
+        
+        /* Bubble Navigation */
+        .bubble-container {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            background: rgba(0,0,0,0.3);
+            padding: 10px 20px;
+            border-radius: 30px;
+            backdrop-filter: blur(5px);
+            z-index: 100;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .bubble {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .bubble:hover {
+            background: rgba(0,0,0,0.5);
+            transform: scale(1.2);
+        }
+
+        /* Graph Slide Styles */
+        .graph-container {
+            width: 100%;
+            max-width: 1000px;
+            margin-top: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .graph-header {
+            display: grid;
+            grid-template-columns: 200px 1fr 1fr 1fr 1fr 1fr;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+        
+        .graph-header div:first-child { text-align: left; padding-left: 20px; }
+
+        .graph-row {
+            display: grid;
+            grid-template-columns: 200px 1fr 1fr 1fr 1fr 1fr;
+            padding: 15px 0;
+            border-bottom: 1px solid #f0f0f0;
+            align-items: center;
+            position: relative;
+        }
+
+        .feature-label {
+            padding-left: 20px;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .bar-container {
+            grid-column: 2 / -1;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+            position: relative;
+            height: 100%;
+            align-items: center;
+        }
+
+        .bar {
+            height: 24px;
+            border-radius: 12px;
+            background: var(--primary);
+            opacity: 0.8;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            transition: width 1s ease-out;
+            box-shadow: 0 2px 5px rgba(240, 148, 62, 0.3);
+        }
+        
+        /* Grid Lines */
+        .graph-row::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 200px;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(to right, transparent, transparent calc(20% - 1px), #f9f9f9 calc(20% - 1px), #f9f9f9 20%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .bubble.active {
+            background: var(--primary);
+            transform: scale(1.2);
+            box-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        /* Logo Header */
+        .logo-header {
+            position: absolute;
+            top: 30px;
+            left: 40px;
+            right: 40px;
+            display: flex;
+            justify-content: flex-start;
+            gap: 10px;
+            align-items: center;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        .logo-icon {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+            opacity: 0.9;
+        }
+
+        .status-badge {
+            position: absolute;
+            top: 40px;
+            right: 40px; /* Adjusted to not clash with logo if needed, but flex header handles logos */
+            background: rgba(16, 185, 129, 0.2);
+            color: #059669;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            display: none; /* Hiding default badge to use header layout if preferred/conflict */
+        }
+        
+        /* Specific override to keep status badge logic or integrate into header? 
+           Let's keep status badge separate but lower it or move it. 
+           Actually, let's keep status badge for Slide 1 only, maybe move it down. 
+        */
 
     </style>
 </head>
 <body>
 
+<!-- Persistent Logo Header -->
+<div class="logo-header">
+    <img src="claude-presentation-tool/assets/cx-icon.png" alt="CollabX" class="logo-icon">
+    <!-- Status Badge can be here or specific to slide. Using absolute positioning in slide was fine. -->
+    <img src="claude-presentation-tool/assets/pty-icon.png" alt="PTY" class="logo-icon">
+</div>
+
 <div class="slides-container">
     
-    <!-- Slide 1: Title -->
-    <div class="slide title-slide active" id="slide-1">
+    <!-- Slide 1: Splash Screen -->
+    <div class="slide active" id="slide-1">
         <h1>CollabX Mobile</h1>
-        <p>Project Status & Strategic Roadmap</p>
-        <div style="margin-top: 30px; color: var(--primary);">2024 Update</div>
+        <div class="subtitle">Feature Roadmap & Strategy</div>
     </div>
 
-    <!-- Slide 2: Current Phase -->
+    <!-- Slide 2: Phase Timeline -->
     <div class="slide" id="slide-2">
-        <h2>Current Phase</h2>
-        <p><strong>Phase 2: Implementation & OTA Infrastructure</strong></p>
-        <ul>
-            <li>Core Mobile App Skeleton (Expo Router) Complete</li>
-            <li>Navigation & Authentication Flow Finalized</li>
-            <li>Server-side OTA Update Engine In-Progress</li>
-            <li>Local Security & Config Verified</li>
-        </ul>
+        <h2>Strategic Timeline</h2>
+        <div class="timeline-container">
+            <div class="phase-card active">
+                <div class="phase-badge">COMPLETED</div>
+                <h3>Phase 1</h3>
+                <p>MVP Foundation</p>
+                <div style="margin-top:15px; font-size:0.9rem; color:#888;">Jan - Feb 2025</div>
+            </div>
+            <div class="phase-card">
+                <div class="phase-badge">UPCOMING</div>
+                <h3>Phase 2</h3>
+                <p>Growth & Scale</p>
+                <div style="margin-top:15px; font-size:0.9rem; color:#888;">Feb - Mar 2025</div>
+            </div>
+            <div class="phase-card">
+                <div class="phase-badge">FUTURE</div>
+                <h3>Phase 3</h3>
+                <p>Intelligence</p>
+                <div style="margin-top:15px; font-size:0.9rem; color:#888;">Apr - May 2025</div>
+            </div>
+        </div>
     </div>
 
-    <!-- Slide 3: Delivered Outcomes -->
+    <!-- Slide 3: Phase 1 Details -->
     <div class="slide" id="slide-3">
-        <h2>Delivered Outcomes</h2>
-        <div class="grid-2">
-            <div class="card">
-                <h3>Stable Core</h3>
-                <p>Robust navigation architecture handling complex nested routes and deep linking.</p>
+        <div class="timeline-bar">
+            <span>Timeline:</span>
+            <strong>Jan - Feb 2025 (Completed)</strong>
+        </div>
+        <div class="phase-badge">PHASE 1 (MVP)</div>
+        <h2>Foundation & Core Features</h2>
+        <div class="feature-grid" style="grid-template-columns: 1fr; gap: 15px;">
+            <div class="feature-item" style="display: flex; align-items: flex-start;">
+                <div class="feature-icon" style="min-width: 40px;">💬</div>
+                <div class="feature-text">
+                    <div>Message Engine</div>
+                    <span>Real-time architecture supporting 1-on-1 and Group chats with high reliability.</span>
+                </div>
             </div>
-            <div class="card">
-                <h3>Auth System</h3>
-                <p>Secure token-based authentication with refresh cycles and session management.</p>
+            <div class="feature-item" style="display: flex; align-items: flex-start;">
+                <div class="feature-icon" style="min-width: 40px;">⚡</div>
+                <div class="feature-text">
+                    <div>Offline Capability</div>
+                    <span>Local database synchronization, aggressive caching, and seamless offline read access.</span>
+                </div>
             </div>
-            <div class="card">
-                <h3>Updates Engine</h3>
-                <p>Self-hosted Expo Updates server capable of signing and serving manifests.</p>
+            <div class="feature-item" style="display: flex; align-items: flex-start;">
+                <div class="feature-icon" style="min-width: 40px;">📸</div>
+                <div class="feature-text">
+                    <div>Media & Assets</div>
+                    <span>Comprehensive support for sending images, videos, files, and rich media assets.</span>
+                </div>
             </div>
-            <div class="card">
-                <h3>Dev Experience</h3>
-                <p>Integrated QR Code generator for instant device testing.</p>
+            <div class="feature-item" style="display: flex; align-items: flex-start;">
+                <div class="feature-icon" style="min-width: 40px;">@</div>
+                <div class="feature-text">
+                    <div>Interactions</div>
+                    <span>Rich social features including User Mentions, Message Replies, and Reactions.</span>
+                </div>
+            </div>
+            <div class="feature-item" style="display: flex; align-items: flex-start; border: 1px solid var(--primary); background: rgba(240, 148, 62, 0.05);">
+                <div class="feature-icon" style="min-width: 40px;">🚀</div>
+                <div class="feature-text">
+                    <div>Connectivity & Updates</div>
+                    <span>External integrations (Line-like) and OTA Updates for seamless patch delivery.</span>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Slide 4: Client Benefits -->
+    <!-- Slide 4: Phase 2 Details -->
     <div class="slide" id="slide-4">
-        <h2>Client Benefits</h2>
-        <ul>
-            <li><strong>Zero-Downtime Updates:</strong> Push fixes instantly without App Store delays.</li>
-            <li><strong>Cost Efficiency:</strong> Single codebase reduces maintenance by ~40%.</li>
-            <li><strong>Data Sovereignty:</strong> Complete control over update infrastructure.</li>
-            <li><strong>Rapid Testing:</strong> Immediate feedback loop via OTA channels.</li>
-        </ul>
-    </div>
-
-    <!-- Slide 5: Timeline -->
-    <div class="slide" id="slide-5">
-        <h2>Timeline & Milestones</h2>
-        <div class="timeline-box">
-            <div class="t-item">Phase 1<br><small>Foundation</small></div>
-            <div class="t-item active">Phase 2<br><small>Core & OTA</small></div>
-            <div class="t-item">Phase 3<br><small>Polish</small></div>
-            <div class="t-item">Phase 4<br><small>Launch</small></div>
+        <div class="timeline-bar">
+            <span>Timeline:</span>
+            <strong>Feb - Mar 2025 (Upcoming)</strong>
         </div>
-        <p style="margin-top: 40px; font-size: 1.2rem;">Currently executing Phase 2: Focusing on the reliability of the update delivery system.</p>
+        <div class="phase-badge">PHASE 2</div>
+        <h2>Expansion & Reach</h2>
+        <div class="feature-grid" style="grid-template-columns: 1fr; gap: 20px; max-width: 900px;">
+            <!-- Notification System -->
+            <div class="feature-item" style="display: flex; align-items: flex-start; padding: 30px;">
+                <div class="feature-icon" style="min-width: 50px; font-size: 2.5rem;">🔔</div>
+                <div class="feature-text">
+                    <div style="font-size: 1.4rem; margin-bottom: 10px;">Notification System</div>
+                    <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.95rem; line-height: 1.6; color: var(--text-secondary);">
+                        <li style="margin-bottom: 5px; padding: 0; background: none; border: none; opacity: 1; transform: none; display: block;">• <strong>Smart Alerts</strong>: Local & Remote Push Notifications</li>
+                        <li style="margin-bottom: 5px; padding: 0; background: none; border: none; opacity: 1; transform: none; display: block;">• <strong>Deep Linking</strong>: Tap to jump directly to specific chats</li>
+                        <li style="margin: 0; padding: 0; background: none; border: none; opacity: 1; transform: none; display: block;">• <strong>Controls</strong>: Smart grouping, mute, and priority settings</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Store Distribution -->
+            <div class="feature-item" style="display: flex; align-items: flex-start; padding: 30px; border: 1px solid var(--primary); background: rgba(240, 148, 62, 0.05);">
+                <div class="feature-icon" style="min-width: 50px; font-size: 2.5rem;">🌍</div>
+                <div class="feature-text">
+                    <div style="font-size: 1.4rem; margin-bottom: 10px;">Store Distribution</div>
+                    <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.95rem; line-height: 1.6; color: var(--text-secondary);">
+                        <li style="margin-bottom: 5px; padding: 0; background: none; border: none; opacity: 1; transform: none; display: block;">• <strong>Apple App Store</strong>: Full Compliance & Public Release</li>
+                        <li style="margin-bottom: 5px; padding: 0; background: none; border: none; opacity: 1; transform: none; display: block;">• <strong>Google Play</strong>: Store Optimization (ASO) & Launch</li>
+                        <li style="margin: 0; padding: 0; background: none; border: none; opacity: 1; transform: none; display: block;">• <strong>Lifecycle</strong>: Version control & public access management</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Slide 6: Next Steps -->
+    <!-- Slide 5: Phase 3 Details -->
+    <div class="slide" id="slide-5">
+        <div class="timeline-bar">
+            <span>Timeline:</span>
+            <strong>Apr - May 2025 (Future)</strong>
+        </div>
+        <div class="phase-badge">PHASE 3</div>
+        <h2>Advanced Capabilities</h2>
+        <div class="feature-grid" style="grid-template-columns: 1fr; gap: 20px; max-width: 900px;">
+            <!-- Ticket System -->
+            <div class="feature-item" style="display: flex; align-items: flex-start; padding: 30px;">
+                <div class="feature-icon" style="min-width: 50px; font-size: 2.5rem;">🎫</div>
+                <div class="feature-text">
+                    <div style="font-size: 1.4rem; margin-bottom: 10px;">Ticket & Assignment</div>
+                    <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.95rem; line-height: 1.6; color: var(--text-secondary);">
+                        <li style="margin-bottom: 5px; padding: 0; background: none; border: none; opacity: 1; transform: none; display: block;">• <strong>Workflow</strong>: Integrated issue tracking system</li>
+                        <li style="margin-bottom: 5px; padding: 0; background: none; border: none; opacity: 1; transform: none; display: block;">• <strong>Management</strong>: Team assignment & status tracking</li>
+                        <li style="margin: 0; padding: 0; background: none; border: none; opacity: 1; transform: none; display: block;">• <strong>Integration</strong>: Create tickets directly from chat context</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- AI Assistant -->
+            <div class="feature-item" style="display: flex; align-items: flex-start; padding: 30px; background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(240,148,62,0.1) 100%); border: 1px solid rgba(240,148,62,0.2);">
+                <div class="feature-icon" style="min-width: 50px; font-size: 2.5rem;">🤖</div>
+                <div class="feature-text">
+                    <div style="font-size: 1.4rem; margin-bottom: 10px;">Personal AI Assistant</div>
+                    <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.95rem; line-height: 1.6; color: var(--text-secondary);">
+                        <li style="margin-bottom: 5px; padding: 0; background: none; border: none; opacity: 1; transform: none; display: block;">• <strong>Automation</strong>: Automated query responses & summaries</li>
+                        <li style="margin-bottom: 5px; padding: 0; background: none; border: none; opacity: 1; transform: none; display: block;">• <strong>Productivity</strong>: Smart work suggestions & reminders</li>
+                        <li style="margin: 0; padding: 0; background: none; border: none; opacity: 1; transform: none; display: block;">• <strong>Intelligence</strong>: Context-aware chatbot integration</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 6: Graph Timeline -->
     <div class="slide" id="slide-6">
-        <h2>Next Steps</h2>
-        <ul>
-            <li>Finalize OTA server stability tests (Edge cases)</li>
-            <li>Implement "Ruby Edition" Theme Polish</li>
-            <li>Begin Phase 3 Planning (Analytics & Performance)</li>
-            <li>Prepare Beta Release Candidates</li>
-        </ul>
+        <h2>Feature Delivery Roadmap</h2>
+        <div class="graph-container">
+            <div class="graph-header">
+                <div>Feature / Month</div>
+                <div>Jan</div>
+                <div>Feb</div>
+                <div>Mar</div>
+                <div>Apr</div>
+                <div>May</div>
+            </div>
+            
+            <!-- Row 1: Messaging -->
+            <div class="graph-row">
+                <div class="feature-label">Messaging Engine</div>
+                <div class="bar-container">
+                    <div class="bar" style="left: 0%; width: 40%;">Core Chat (Phase 1)</div>
+                </div>
+            </div>
+
+            <!-- Row 2: Offline/OTA -->
+            <div class="graph-row">
+                <div class="feature-label">Offline & OTA</div>
+                <div class="bar-container">
+                    <div class="bar" style="left: 20%; width: 20%; background: #fbbf24;">Sync</div>
+                </div>
+            </div>
+
+            <!-- Row 3: Notifications -->
+            <div class="graph-row">
+                <div class="feature-label">Notifications</div>
+                <div class="bar-container">
+                    <div class="bar" style="left: 30%; width: 30%; background: #34d399;">Push Logic</div>
+                </div>
+            </div>
+
+            <!-- Row 4: Store Release -->
+            <div class="graph-row">
+                <div class="feature-label">Store Release</div>
+                <div class="bar-container">
+                    <div class="bar" style="left: 45%; width: 15%; background: #60a5fa;">Launch</div>
+                </div>
+            </div>
+
+             <!-- Row 5: Tickets -->
+             <div class="graph-row">
+                <div class="feature-label">Ticket Cards</div>
+                <div class="bar-container">
+                    <div class="bar" style="left: 60%; width: 40%; background: #a78bfa;">Ticket Sys</div>
+                </div>
+            </div>
+
+            <!-- Row 6: AI Assistant -->
+            <div class="graph-row">
+                <div class="feature-label">AI Assistant</div>
+                <div class="bar-container">
+                    <div class="bar" style="left: 60%; width: 40%; background: #f472b6;">AI</div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Slide 7: Thank You -->
-    <div class="slide title-slide" id="slide-7">
-        <h1>Thank You</h1>
-        <p>Ready for Q&A</p>
+    <!-- Slide 7: Q&A -->
+    <div class="slide" id="slide-7">
+        <h1>Q&A</h1>
+        <div class="subtitle">Open Floor for Discussion</div>
     </div>
 
 </div>
 
+<!-- Navigation Controls -->
 <div class="controls">
-    <button onclick="prevSlide()">Previous</button>
-    <button onclick="nextSlide()">Next</button>
+    <button class="nav-btn" onclick="prevSlide()">Previous</button>
+    <button class="nav-btn" onclick="nextSlide()">Next</button>
 </div>
 
-<div class="progress-bar" id="progressBar"></div>
+<!-- Bubble Navigation -->
+<div class="bubble-container" id="bubbleContainer">
+    <!-- Bubbles injected by JS -->
+</div>
 
 <script>
     let currentSlide = 0;
     const slides = document.querySelectorAll('.slide');
-    const progressBar = document.getElementById('progressBar');
+    const bubbleContainer = document.getElementById('bubbleContainer');
     const totalSlides = slides.length;
 
+    // Initialize Bubbles
+    function initBubbles() {
+        bubbleContainer.innerHTML = '';
+        for (let i = 0; i < totalSlides; i++) {
+            const bubble = document.createElement('div');
+            bubble.classList.add('bubble');
+            if (i === 0) bubble.classList.add('active');
+            bubble.onclick = () => showSlide(i);
+            bubbleContainer.appendChild(bubble);
+        }
+    }
+
+    function updateBubbles(index) {
+        const bubbles = document.querySelectorAll('.bubble');
+        bubbles.forEach((b, i) => {
+            if (i === index) b.classList.add('active');
+            else b.classList.remove('active');
+        });
+    }
+
     function showSlide(index) {
-        // Bounds check
         if (index < 0) index = 0;
         if (index >= totalSlides) index = totalSlides - 1;
         
         currentSlide = index;
 
-        // Update classes
+        // Update Slide Classes
         slides.forEach((slide, i) => {
             slide.classList.remove('active', 'exit');
             if (i === currentSlide) {
@@ -354,9 +736,8 @@
             }
         });
 
-        // Update progress bar
-        const progress = ((currentSlide + 1) / totalSlides) * 100;
-        progressBar.style.width = progress + '%';
+        // Update Bubbles
+        updateBubbles(currentSlide);
     }
 
     function nextSlide() {
@@ -367,7 +748,6 @@
         showSlide(currentSlide - 1);
     }
 
-    // Keyboard navigation
     document.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowRight' || e.key === 'Space') {
             nextSlide();
@@ -377,6 +757,7 @@
     });
 
     // Initial State
+    initBubbles();
     showSlide(0);
 </script>
 
