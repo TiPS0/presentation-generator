@@ -1,0 +1,26 @@
+{
+  "name": "presentation-generate",
+  "version": "1.0.0",
+  "description": "primary repository for generating presentations using LLMs.",
+  "main": "index.js",
+  "scripts": {
+    "export:pdf": "node scripts/export-pdf/interactive-export.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TiPS0/presentation-generator.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TiPS0/presentation-generator/issues"
+  },
+  "homepage": "https://github.com/TiPS0/presentation-generator#readme",
+  "dependencies": {
+    "chalk": "^5.6.2",
+    "inquirer": "^13.2.1",
+    "ora": "^9.1.0",
+    "puppeteer": "^24.36.1"
+  }
+}
