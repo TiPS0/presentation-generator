@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CollabX_Route Presentation</title>
+    <!-- Google Fonts: Outfit (English) & Sarabun (Thai) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1e3a8a; /* Deep Blue */
+            --accent-color: #f97316; /* Vibrant Orange */
+            --bg-color: #f8fafc;
+            --text-color: #1f2937;
+            --slide-bg: #ffffff;
+            --transition-speed: 0.4s;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Sarabun', 'Outfit', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow: hidden; /* Prevent scrolling, slides handle it */
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* --- UI Components: Header / Tab Bar --- */
+        .app-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            z-index: 1000;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 20px;
+            color: var(--primary-color);
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .logo span {
+            color: var(--accent-color);
+        }
+
+        .tab-nav {
+            display: flex;
+            gap: 4px;
+            height: 100%;
+        }
+
+        .tab-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 16px;
+            height: 100%;
+            font-size: 14px;
+            font-weight: 500;
+            color: #64748b;
+            cursor: pointer;
+            position: relative;
+            transition: color 0.2s ease;
+        }
+
+        .tab-item:hover {
+            color: var(--primary-color);
+            background-color: rgba(30, 58, 138, 0.03);
+        }
+
+        .tab-item.active {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .tab-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary-color);
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+        }
+
+        /* --- Slide Container --- */
+        .slides-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            perspective: 1000px;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding-top: 80px; /* Header height + padding */
+            padding-bottom: 60px; /* Footer height + padding */
+            padding-left: 60px;
+            padding-right: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: all var(--transition-speed) ease-in-out;
+            transform: translateX(50px);
+            background-color: var(--slide-bg);
+            /* Slide specific layout handling */
+            overflow-y: auto; /* Allow scrolling content on small screens */
+        }
+
+        .slide.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateX(0);
+            z-index: 10;
+        }
+
+        .slide.prev {
+            transform: translateX(-50px);
+            opacity: 0;
+            z-index: 1;
+        }
+
+        /* --- Content Layout --- */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Default split */
+            gap: 40px;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            align-items: center;
+        }
+
+        .full-width {
+            grid-template-columns: 1fr;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 16px;
+            line-height: 1.1;
+        }
+
+        h2 {
+            font-size: 32px;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 24px;
+            position: relative;
+        }
+        
+        h2::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background-color: var(--accent-color);
+            margin-top: 12px;
+            border-radius: 2px;
+        }
+        
+        .full-width h2::after {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        h3 {
+            font-size: 24px;
+            color: var(--primary-color);
+            margin-bottom: 12px;
+        }
+
+        p {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #4b5563;
+            margin-bottom: 16px;
+        }
+
+        .highlight {
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        /* --- Lists with Animations --- */
+        ul {
+            list-style: none;
+        }
+
+        li {
+            margin-bottom: 16px;
+            padding-left: 24px;
+            position: relative;
+            font-size: 18px;
+            color: #374151;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.5s ease-out;
+        }
+
+        .slide.active li {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        li::before {
+            content: '•';
+            color: var(--accent-color);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            font-size: 24px;
+            line-height: 1;
+            top: -2px;
+        }
+
+        /* Staggered transition delay for list items */
+        .slide.active li:nth-child(1) { transition-delay: 0.1s; }
+        .slide.active li:nth-child(2) { transition-delay: 0.2s; }
+        .slide.active li:nth-child(3) { transition-delay: 0.3s; }
+        .slide.active li:nth-child(4) { transition-delay: 0.4s; }
+        .slide.active li:nth-child(5) { transition-delay: 0.5s; }
+
+        /* --- Cards --- */
+        .card-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            flex: 1;
+            min-width: 280px;
+            border-left: 4px solid var(--primary-color);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h4 {
+            color: var(--primary-color);
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+        
+        .card-icon {
+            font-size: 32px;
+            margin-bottom: 16px;
+            color: var(--accent-color);
+            display: block;
+        }
+
+        /* --- Visual Areas (Images/Mockups) --- */
+        .visual-area {
+            background-color: #f1f5f9;
+            border-radius: 16px;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .mockup-tablet {
+            width: 80%;
+            height: 70%;
+            background-color: white;
+            border-radius: 12px;
+            border: 8px solid #334155;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .mockup-header {
+            height: 24px;
+            background-color: #1e3a8a;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+        }
+        
+        .mockup-body {
+            flex: 1;
+            padding: 16px;
+            background-color: #f8fafc;
+        }
+
+        /* --- Animation classes --- */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .slide.active .fade-in-up {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+        .delay-400 { transition-delay: 400ms; }
+        .delay-500 { transition-delay: 500ms; }
+
+        /* --- Navigation Controls --- */
+        .nav-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 24px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            background-color: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #64748b;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-btn:hover {
+            color: var(--primary-color);
+            background-color: #f1f5f9;
+        }
+
+        .page-indicator {
+            font-size: 14px;
+            font-weight: 500;
+            color: #64748b;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .slide {
+                padding: 80px 24px 80px 24px;
+            }
+            
+            h1 { font-size: 36px; }
+            h2 { font-size: 28px; }
+            
+            .visual-area { height: 300px; }
+            
+            .tab-item {
+                padding: 0 8px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header / Tab Bar -->
+    <header class="app-header">
+        <div class="logo">
+            CollabX<span>Route</span>
+        </div>
+        <nav class="tab-nav">
+            <div class="tab-item active" onclick="goToSection(0)">Introduction</div>
+            <div class="tab-item" onclick="goToSection(5)">Solution</div>
+            <div class="tab-item" onclick="goToSection(12)">User Journey</div>
+            <div class="tab-item" onclick="goToSection(17)">Business Impact</div>
+            <div class="tab-item" onclick="goToSection(22)">Conclusion</div>
+        </nav>
+    </header>
+
+    <!-- Slide Container -->
+    <main class="slides-container">
+        
+        <!-- --- SECTION 1: Introduction --- -->
+
+        <!-- Slide 1: Introduction -->
+        <article class="slide active">
+            <div class="content-grid full-width">
+                <div>
+                    <h1 class="fade-in-up">CollabX-Route</h1>
+                    <h2 class="fade-in-up delay-200" style="color: var(--accent-color); margin-top: 0; font-weight: 500;">Driving Sales Performance & Profit Growth</h2>
+                    <p class="fade-in-up delay-300" style="font-size: 24px; margin-top: 24px;">Sales Enablement & Route Intelligence Platform</p>
+                    <p class="fade-in-up delay-400" style="color: #64748b; margin-top: 40px; font-size: 16px;">เพิ่มประสิทธิภาพการขายและการทำกำไรด้วยการจัดการเส้นทางอัจฉริยะ</p>
+                </div>
+            </div>
+        </article>
+
+        <!-- Slide 2: Company Overview -->
+        <article class="slide">
+            <div class="content-grid">
+                <div class="text-col">
+                    <h2>Company Overview</h2>
+                    <p><strong>Company:</strong> Patanayont</p>
+                    <p><strong>Project:</strong> Partvans</p>
+                    <h3>Business Model Context</h3>
+                    <ul>
+                        <li>Automotive spare parts distribution (ธุรกิจจัดจำหน่ายอะไหล่ยนต์)</li>
+                        <li>Mobile sales model using EV vans (หน่วยรถขายเคลื่อนที่ EV)</li>
+                        <li><strong>Sales Role:</strong>
+                            <br>Order fulfillment + Active promotion + New customer development
+                        </li>
+                    </ul>
+                </div>
+                <div class="visual-area">
+                    <div style="text-align: center;">
+                        <span style="font-size: 64px; display: block; margin-bottom: 20px;">🚐 ⚡</span>
+                        <div style="font-weight: 700; color: var(--primary-color);">Mobile Sales EV</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- Slide 3: Current Operations -->
+        <article class="slide">
+            <div class="content-grid full-width">
+                <h2>Current Operational Workflow</h2>
+                <div class="card-container" style="margin-top: 40px;">
+                    <div class="card fade-in-up delay-100">
+                        <span class="card-icon">🌅</span>
+                        <h4>1. Morning</h4>
+                        <p>Assignment at HQ & Stock Loading (รับงานและสินค้า)</p>
+                    </div>
+                    <div class="card fade-in-up delay-200">
+                        <span class="card-icon">🚚</span>
+                        <h4>2. Field Sales</h4>
+                        <p>Execution of Route & Selling (ออกพื้นที่ขาย)</p>
+                    </div>
+                    <div class="card fade-in-up delay-300">
+                        <span class="card-icon">🌇</span>
+                        <h4>3. End of Day</h4>
+                        <p>Return to HQ, Reconcile & Report (สรุปยอดและส่งคืนสินค้า)</p>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- Slide 4: Challenges -->
+        <article class="slide">
+            <div class="content-grid">
+                <div class="text-col">
+                    <h2>Current Challenges</h2>
+                    <h3>Pain Points</h3>
+                    <ul>
+                        <li><strong>Manual Routing:</strong> planned monthly, static, rigid (เส้นทางตายตัว ปรับเปลี่ยนยาก)</li>
+                        <li><strong>Inefficiency:</strong> Traffic delays & construction (รถติดและอุปสรรคหน้างาน)</li>
+                        <li><strong>Communication Gap:</strong> Manual coordination with customers (เสียเวลาสื่อสารนัดหมาย)</li>
+                        <li><strong>Missed Opportunities:</strong> Limited visibility of nearby potential stores (พลาดโอกาสร้านค้าใกล้เคียง)</li>
+                    </ul>
+                </div>
+                <div class="visual-area">
+                   <span style="font-size: 80px;">⚠️ ⏳</span>
+                </div>
+            </div>
+        </article>
+
+        <!-- Slide 5: Opportunity -->
+        <article class="slide">
+            <div class="content-grid full-width">
+                <h2>Growth Opportunity</h2>
+                <p style="text-align: center; max-width: 800px; margin: 0 auto; margin-bottom: 40px;">
+                    "Scaling performance without increasing headcount (เพิ่มยอดขายโดยไม่ต้องเพิ่มคน)"
+                </p>
+                <div class="card-container">
+                    <div class="card fade-in-up delay-100">
+                        <h4>Efficiency</h4>
+                        <p>Reduce time per transaction<br>Save 15-20 mins/deal</p>
+                    </div>
+                    <div class="card fade-in-up delay-200">
+                        <h4>Capacity</h4>
+                        <p>Increase daily visits<br>More deals per day</p>
+                    </div>
+                    <div class="card fade-in-up delay-300">
+                        <h4>Conversion</h4>
+                        <p>Real-time visibility<br>Faster closing</p>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- --- SECTION 2: Solution --- -->
+
+        <!-- Slide 6: Solution Overview -->
+        <article class="slide">
+            <div class="content-grid">
+                <div class="text-col">
+                    <h2>Introducing <span style="color: var(--primary-color);">CollabX_Route</span></h2>
+                    <p class="highlight">Sales Enablement & Route Intelligence Platform</p>
+                    <ul>
+                        <li>Tablet Application for Sales Reps</li>
+                        <li>Real-time Route Optimization</li>
+                        <li>Nearby Customer Discovery</li>
+                        <li>Integrated Communication</li>
+                    </ul>
+                </div>
+                <div class="visual-area">
+                    <div class="mockup-tablet">
+                         <div class="mockup-header"></div>
+                         <div class="mockup-body" style="display: flex; align-items: center; justify-content: center;">
+                             <div style="font-weight: 700; font-size: 24px; color: var(--primary-color);">CollabX_Route</div>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+         <!-- Slide 7: Value Prop -->
+        <article class="slide">
+             <div class="content-grid full-width">
+                <h2>Core Value Proposition</h2>
+                <div class="card-container" style="justify-content: center;">
+                     <div class="card fade-in-up delay-100" style="text-align: center; max-width: 400px;">
+                         <span class="card-icon">🚀</span>
+                         <h4>Maximize Sales Output</h4>
+                         <p>Enable Sales to perform at their peak every single day.</p>
+                     </div>
+                </div>
+                <div class="card-container" style="margin-top: 30px;">
+                    <div class="card">Productivity</div>
+                    <div class="card">Efficiency</div>
+                    <div class="card">Acquisition</div>
+                    <div class="card">Engagement</div>
+                </div>
+             </div>
+        </article>
+
+        <!-- Slide 8: Smart Routes -->
+        <article class="slide">
+            <div class="content-grid">
+                <div class="text-col">
+                    <h2>Feature 1: Smart Routes</h2>
+                    <h3 style="color: var(--accent-color);">Dynamic Route Engine</h3>
+                    <ul>
+                        <li><strong>Real-time Analysis:</strong> Traffic, Closures, Accidents</li>
+                        <li><strong>Smart Sequence:</strong> Re-orders stops for shortest path</li>
+                        <li><strong>Adaptive:</strong> Adjusts recommendations daily</li>
+                    </ul>
+                    <p style="font-size: 14px; color: #64748b; margin-top: 20px;">*Inspired by RouteXL logic</p>
+                </div>
+                <div class="visual-area">
+                     <!-- Simplified Map Graphic -->
+                     <svg width="300" height="200" viewBox="0 0 300 200">
+                         <!-- Route Line -->
+                         <path d="M50 150 L100 80 L200 50 L250 120" stroke="#f97316" stroke-width="4" fill="none" class="fade-in-up delay-500"/>
+                         <!-- Points -->
+                         <circle cx="50" cy="150" r="8" fill="#1e3a8a" />
+                         <circle cx="100" cy="80" r="6" fill="#1e3a8a" />
+                         <circle cx="200" cy="50" r="6" fill="#1e3a8a" />
+                         <circle cx="250" cy="120" r="6" fill="#1e3a8a" />
+                     </svg>
+                </div>
+            </div>
+        </article>
+
+        <!-- Slide 9: Before vs After -->
+        <article class="slide">
+            <div class="content-grid full-width">
+                 <h2>The Routing Advantage</h2>
+                 <div class="card-container">
+                     <div class="card" style="border-left-color: #ef4444;">
+                         <h4 style="color: #ef4444;">Before (Old)</h4>
+                         <ul>
+                             <li>Static Monthly Plan</li>
+                             <li>Manual Adjustments</li>
+                             <li>Personal Experience Based</li>
+                         </ul>
+                     </div>
+                     <div class="card" style="border-left-color: #22c55e;">
+                         <h4 style="color: #22c55e;">After (CollabX)</h4>
+                         <ul>
+                             <li>Dynamic Real-time Intelligence</li>
+                             <li>Data-Driven Decisions</li>
+                             <li>Increased Selling Time</li>
+                         </ul>
+                     </div>
+                 </div>
+            </div>
+        </article>
+
+        <!-- Slide 10: Nearby Discovery -->
+        <article class="slide">
+            <div class="content-grid">
+                <div class="text-col">
+                    <h2>Feature 2: Nearby Store Discovery</h2>
+                    <h3>Turn "Dead Time" into "Deals"</h3>
+                    <p>Integrate non-member store suggestions directly onto the map.</p>
+                    <ul>
+                        <li>Search "Spare Parts Store"</li>
+                        <li>Visualize potential clients nearby</li>
+                        <li>One-tap "Add to Route"</li>
+                    </ul>
+                    <p class="highlight">Result: Organic Territory Expansion</p>
+                </div>
+                <div class="visual-area">
+                    <span style="font-size: 64px;">📍 ➕ 🏪</span>
+                </div>
+            </div>
+        </article>
+
+        <!-- Slide 11: Alert Messaging -->
+        <article class="slide">
+             <div class="content-grid">
+                 <div class="text-col">
+                     <h2>Feature 3: Alert Messaging</h2>
+                     <h3>Seamless Communication</h3>
+                     <ul>
+                         <li><strong>Automated Alerts:</strong> "Van en route", "Arriving in 10 mins"</li>
+                         <li><strong>Marketing:</strong> Promotions, Points updates</li>
+                         <li><strong>Direct Channel:</strong> Integrated LINE OA messaging</li>
+                     </ul>
+                     <p>Reduced waiting time = Happier customers</p>
+                 </div>
+                 <div class="visual-area">
+                    <div style="background: white; padding: 20px; border-radius: 12px; width: 200px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                        <div style="font-size: 12px; color: #999;">Notification</div>
+                        <div style="font-weight: bold; margin-bottom: 5px;">Patanayont Van</div>
+                        <div style="font-size: 14px;">Arriving in 10 mins 🚚</div>
+                    </div>
+                 </div>
+             </div>
+        </article>
+
+        <!-- --- SECTION 3: User Journey --- -->
+
+        <!-- Slide 12: UI Overview -->
+        <article class="slide">
+            <div class="content-grid">
+                <div class="text-col">
+                    <h2>Intuitive UI Design</h2>
+                    <h3>4 Main Tabs</h3>
+                    <ol style="margin-left: 20px; line-height: 2;">
+                        <li><strong>Smart Routes:</strong> (Map & Navigation)</li>
+                        <li><strong>Chats:</strong> (Customer Communication)</li>
+                        <li><strong>Ordering:</strong> (Official Web Link)</li>
+                        <li><strong>Settings:</strong> (Profile & Config)</li>
+                    </ol>
+                </div>
+                <div class="visual-area">
+                     <div class="mockup-tablet">
+                         <div class="mockup-header"></div>
+                         <div class="mockup-body" style="display: flex; flex-direction: column; justify-content: flex-end;">
+                             <div style="height: 40px; background: #e2e8f0; border-top-left-radius: 8px; border-top-right-radius: 8px; display: flex; justify-content: space-around; align-items: center;">
+                                 <span>🗺️</span><span>💬</span><span>🛒</span><span>⚙️</span>
+                             </div>
+                         </div>
+                     </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- Slide 13: Scene 1 Login -->
+        <article class="slide">
+            <div class="content-grid full-width">
+                <h2>User Journey: Start of Day</h2>
+                <div class="visual-area" style="max-width: 600px; margin: 0 auto;">
+                    <div style="text-align: center;">
+                        <h3>Login</h3>
+                        <div style="background: white; padding: 20px; border-radius: 8px; width: 250px; margin: 20px auto; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                            <div style="height: 10px; background: #e2e8f0; margin-bottom: 10px; border-radius: 4px;"></div>
+                            <div style="height: 10px; background: #e2e8f0; margin-bottom: 20px; border-radius: 4px;"></div>
+                            <div style="height: 30px; background: var(--primary-color); border-radius: 4px; color: white; line-height: 30px; font-size: 14px;">Sign In</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- Slide 14: Scene 2 Route Loading -->
+        <article class="slide">
+            <div class="content-grid full-width">
+                 <h2>Journey: Route Optimization</h2>
+                 <p>System loads tasks, checks traffic, and draws the perfect line.</p>
+                 <div class="visual-area" style="max-width: 600px; margin: 0 auto;">
+                     <span style="font-size: 40px;" class="fade-in-up">HQ 🏢 ➡️ 🏪 ➡️ 🏪 ➡️ 🏠</span>
+                 </div>
+            </div>
+        </article>
+
+        <!-- Slide 15: Scene 3 Discovery -->
+        <article class="slide">
+            <div class="content-grid full-width">
+                <h2>Journey: Mid-Day Discovery</h2>
+                <p>Sales rep sees a gap in the schedule and checks for "Nearby Opportunities".</p>
+                <div class="card-container">
+                    <div class="card">
+                        <h4>1. Tap "Find Nearby"</h4>
+                    </div>
+                    <div class="card">
+                        <h4>2. See Options</h4>
+                    </div>
+                    <div class="card">
+                        <h4>3. Add to Route</h4>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- Slide 16: Scene 4 Alerting -->
+        <article class="slide">
+            <div class="content-grid">
+                <div class="text-col">
+                    <h2>Journey: Arrival Automation</h2>
+                    <h3>Zero Friction</h3>
+                    <p>As the van approaches the geofence...</p>
+                    <div class="card fade-in-up">
+                        <p style="margin:0;"><strong>System:</strong> Sends "Arriving in 10 mins" line message.</p>
+                        <hr style="margin: 10px 0; border: 0; border-top: 1px solid #eee;">
+                        <p style="margin:0;"><strong>Customer:</strong> Gets notified, prepares cash/goods.</p>
+                        <hr style="margin: 10px 0; border: 0; border-top: 1px solid #eee;">
+                        <p style="margin:0;"><strong>Result:</strong> Sales rep arrives, customer is ready. No waiting.</p>
+                    </div>
+                </div>
+                 <div class="visual-area">
+                    <span style="font-size: 60px;">📲 🤝</span>
+                </div>
+            </div>
+        </article>
+
+         <!-- Slide 17: Scene 5 Summary -->
+         <article class="slide">
+             <div class="content-grid full-width">
+                 <h2>Journey: End of Day</h2>
+                 <h3>Performance Dashboard</h3>
+                 <div class="card-container">
+                     <div class="card" style="text-align: center;">
+                         <span style="font-size: 30px; color: #22c55e;">100%</span>
+                         <p>Route Completion</p>
+                     </div>
+                     <div class="card" style="text-align: center;">
+                         <span style="font-size: 30px; color: var(--primary-color);">15</span>
+                         <p>Stores Visited</p>
+                     </div>
+                     <div class="card" style="text-align: center;">
+                         <span style="font-size: 30px; color: var(--accent-color);">$Top</span>
+                         <p>Sales Target</p>
+                     </div>
+                 </div>
+             </div>
+         </article>
+
+        <!-- --- SECTION 4: Business Impact --- -->
+
+        <!-- Slide 18: Revenue Growth -->
+        <article class="slide">
+            <div class="content-grid">
+                 <div class="text-col">
+                     <h2>Revenue Growth Model</h2>
+                     <h3>Increased Daily Visits</h3>
+                     <ul>
+                         <li>Current: 12 stores/day</li>
+                         <li><strong>Optimized: 14-15+ stores/day</strong></li>
+                         <li>(+15-25% Capacity)</li>
+                     </ul>
+                      <div class="card fade-in-up delay-300" style="background: #f0fdf4; border-left-color: #22c55e;">
+                         <h4>Impact Breakdown</h4>
+                         <p>+2 Stores/Day = <strong>$13,200 / month</strong></p>
+                         <p style="font-size: 14px; opacity: 0.8;">(Based on $300 avg revenue)</p>
+                     </div>
+                 </div>
+                 <div class="visual-area">
+                     <div style="display: flex; align-items: flex-end; height: 200px; gap: 20px;">
+                         <div style="width: 50px; height: 60%; background: #94a3b8; border-radius: 4px;"></div>
+                         <div style="width: 50px; height: 80%; background: #22c55e; border-radius: 4px;"></div>
+                     </div>
+                 </div>
+            </div>
+        </article>
+
+        <!-- Slide 19: Upsell Impact -->
+        <article class="slide">
+            <div class="content-grid">
+                 <div class="text-col">
+                     <h2>Upsell & Promotion</h2>
+                     <h3>Structured Display</h3>
+                     <ul>
+                         <li>Real-time product visibility</li>
+                         <li>Promotion alerts on Tablet</li>
+                     </ul>
+                      <div class="card fade-in-up delay-300" style="background: #f0fdf4; border-left-color: #22c55e;">
+                         <h4>Impact Breakdown</h4>
+                         <p>avg order increase 5-10%</p>
+                         <p><strong>+$3,960 - $7,920 / month</strong></p>
+                     </div>
+                 </div>
+                <div class="visual-area">
+                    <span style="font-size: 60px;">📈 💰</span>
+                </div>
+            </div>
+        </article>
+
+        <!-- Slide 20: New Customer Impact -->
+        <article class="slide">
+            <div class="content-grid">
+                <div class="text-col">
+                     <h2>New Customer Acquisition</h2>
+                     <h3>Nearby Store Feature</h3>
+                     <ul>
+                         <li>Target: 2 new stores/week</li>
+                         <li>8 new stores/month</li>
+                         <li>Recuring revenue model</li>
+                     </ul>
+                     <div class="card fade-in-up delay-300" style="background: #eff6ff; border-left-color: #3b82f6;">
+                         <h4>Recurring Value</h4>
+                         <p>8 new stores x 4 visits =</p>
+                         <p><strong>+$9,600 / month</strong> (Cumulative)</p>
+                     </div>
+                </div>
+                 <div class="visual-area">
+                    <span style="font-size: 60px;">🆕 🏪</span>
+                </div>
+            </div>
+        </article>
+
+        <!-- Slide 21: Cost Optimization -->
+        <article class="slide">
+            <div class="content-grid full-width">
+                 <h2>Cost Optimization</h2>
+                 <div class="card-container">
+                     <div class="card">
+                         <span class="card-icon">⚡</span>
+                         <h4>EV Efficiency</h4>
+                         <p>-10% Driving Distance<br>Reduced energy & wear</p>
+                     </div>
+                     <div class="card">
+                         <span class="card-icon">⏳</span>
+                         <h4>Time Savings</h4>
+                         <p>~70 mins/day saved<br>via automated alerts</p>
+                     </div>
+                     <div class="card">
+                         <span class="card-icon">⚙️</span>
+                         <h4>Admin Ops</h4>
+                         <p>Reduced manual work<br>Streamlined workflow</p>
+                     </div>
+                 </div>
+            </div>
+        </article>
+
+        <!-- Slide 22: Scenario Summary -->
+        <article class="slide">
+            <div class="content-grid">
+                <div class="text-col">
+                    <h2>Monthly Revenue Impact</h2>
+                    <p>Estimates based on single van model.</p>
+                    
+                    <div class="card fade-in-up delay-100" style="margin-bottom: 20px;">
+                        <h4>Conservative</h4>
+                        <p style="font-size: 24px; color: #64748b;">+ $17,000 / month</p>
+                    </div>
+                    
+                    <div class="card fade-in-up delay-300" style="background: #f0fdf4; border-left-color: #22c55e; transform: scale(1.05);">
+                        <h4>Moderate (Target)</h4>
+                        <p style="font-size: 32px; color: #22c55e; font-weight: bold;">+ $37,000 / month</p>
+                        <p style="font-size: 14px;">(New visits + Upsell + New Customers)</p>
+                    </div>
+                </div>
+                <div class="visual-area">
+                     <span style="font-size: 80px;">💹</span>
+                </div>
+            </div>
+        </article>
+
+
+        <!-- --- SECTION 5: Conclusion --- -->
+
+        <!-- Slide 23: Strategic Summary -->
+        <article class="slide">
+             <div class="content-grid full-width">
+                 <h2>Strategic Impact Summary</h2>
+                 <div class="card-container">
+                     <div class="card">
+                         <h4>Revenue</h4>
+                         <ul><li>Higher Capacity</li><li>Recurring Growth</li></ul>
+                     </div>
+                     <div class="card">
+                         <h4>Cost</h4>
+                         <ul><li>Lower Energy</li><li>Less Idle Time</li></ul>
+                     </div>
+                     <div class="card">
+                         <h4>Structure</h4>
+                         <ul><li>Scalable Model</li><li>Data-Driven</li></ul>
+                     </div>
+                 </div>
+             </div>
+        </article>
+
+        <!-- Slide 24: Roadmap -->
+        <article class="slide">
+            <div class="content-grid full-width">
+                <h2>Implementation Roadmap</h2>
+                <div style="display: flex; gap: 20px; text-align: left; margin-top: 40px; overflow-x: auto; padding-bottom: 20px;">
+                     <div class="card fade-in-up delay-100" style="min-width: 250px;">
+                         <div style="font-size: 14px; color: #999; margin-bottom: 5px;">Phase 1</div>
+                         <h4>Pilot Program</h4>
+                         <p>Small team, limited features, measure impact.</p>
+                     </div>
+                     <div style="font-size: 24px; align-self: center; color: #ccc;">➜</div>
+                     <div class="card fade-in-up delay-200" style="min-width: 250px;">
+                         <div style="font-size: 14px; color: #999; margin-bottom: 5px;">Phase 2</div>
+                         <h4>Full Rollout</h4>
+                         <p>Company-wide, training & onboarding.</p>
+                     </div>
+                     <div style="font-size: 24px; align-self: center; color: #ccc;">➜</div>
+                     <div class="card fade-in-up delay-300" style="min-width: 250px;">
+                         <div style="font-size: 14px; color: #999; margin-bottom: 5px;">Phase 3</div>
+                         <h4>Optimization</h4>
+                         <p>Analytics driven enhancement.</p>
+                     </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- Slide 25: Closing -->
+        <article class="slide">
+            <div class="content-grid full-width">
+                <h1 class="fade-in-up">Let's Scale Together.</h1>
+                <p class="fade-in-up delay-200" style="font-size: 24px; max-width: 800px; margin: 20px auto;">
+                    "CollabX_Route turns one van into a higher-performing profit engine."
+                </p>
+                <div class="fade-in-up delay-300" style="margin-top: 40px;">
+                    <button onclick="goToSection(0)" style="background-color: var(--accent-color); color: white; border: none; padding: 16px 32px; font-size: 18px; font-weight: 600; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 6px rgba(249, 115, 22, 0.3); transition: transform 0.2s;">
+                        Start Pilot Program
+                    </button>
+                    <p style="margin-top: 20px; font-size: 14px; color: #94a3b8;">Presentation by CollabX Team</p>
+                </div>
+            </div>
+        </article>
+
+    </main>
+
+    <!-- Navigation Controls -->
+    <div class="nav-controls">
+        <button class="nav-btn" onclick="prevSlide()" aria-label="Previous Slide">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <span class="page-indicator" id="pageIndicator">1 / 25</span>
+        <button class="nav-btn" onclick="nextSlide()" aria-label="Next Slide">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+    </div>
+
+    <script>
+        // --- Logic: Slide Navigation ---
+        const slides = document.querySelectorAll('.slide');
+        const pageIndicator = document.getElementById('pageIndicator');
+        const tabItems = document.querySelectorAll('.tab-item');
+        let currentSlide = 0;
+        const totalSlides = slides.length;
+
+        function updateSlide(index) {
+            // Bounds check
+            if (index < 0) index = 0;
+            if (index >= totalSlides) index = totalSlides - 1;
+            
+            currentSlide = index;
+
+            // Update visual state
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active', 'prev');
+                if (i === currentSlide) {
+                    slide.classList.add('active');
+                } else if (i < currentSlide) {
+                    slide.classList.add('prev');
+                }
+            });
+
+            // Update Page Indicator
+            pageIndicator.innerText = `${currentSlide + 1} / ${totalSlides}`;
+
+            // Update Tab Active State (Based on sections)
+            updateActiveTab();
+        }
+
+        function nextSlide() {
+            updateSlide(currentSlide + 1);
+        }
+
+        function prevSlide() {
+            updateSlide(currentSlide - 1);
+        }
+
+        function goToSection(slideIndex) {
+            updateSlide(slideIndex);
+        }
+
+        // Map slide indices to tabs for highlighting
+        function updateActiveTab() {
+            tabItems.forEach(t => t.classList.remove('active'));
+            
+            if (currentSlide < 5) tabItems[0].classList.add('active');      // Intro
+            else if (currentSlide < 12) tabItems[1].classList.add('active'); // Solution
+            else if (currentSlide < 17) tabItems[2].classList.add('active'); // Journey
+            else if (currentSlide < 22) tabItems[3].classList.add('active'); // Impact
+            else tabItems[4].classList.add('active');                        // Conclusion
+        }
+
+        // --- Event Listeners ---
+        // Keyboard
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        // Touch Swipe
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        document.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            if (touchEndX < touchStartX - 50) nextSlide();
+            if (touchEndX > touchStartX + 50) prevSlide();
+        }
+        
+        // Initial Render
+        updateSlide(0);
+
+    </script>
+</body>
+</html>
