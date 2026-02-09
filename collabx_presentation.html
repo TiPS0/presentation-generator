@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CollabX_Route Presentation</title>
+    <title>CollabX Route Presentation</title>
     <!-- Google Fonts: Outfit (English) & Sarabun (Thai) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -572,6 +572,585 @@
             flex: 1;
             border-top: 6px solid #ccc;
         }
+        /* --- New Redesign CSS (Slides 6-10) --- */
+        .solution-card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            width: 100%;
+            margin-top: 40px;
+        }
+
+        .solution-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08); /* Softer shadow */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .solution-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.12);
+        }
+
+        .solution-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: var(--card-color, var(--primary-color));
+        }
+
+        .solution-icon-box {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            margin-bottom: 20px;
+            background-color: var(--bg-tint);
+            color: var(--card-color);
+        }
+
+        .metric-badge {
+            margin-top: auto;
+            background-color: var(--bg-tint);
+            color: var(--card-color);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            align-self: flex-start;
+        }
+
+        /* Tablet Mockup Refined */
+        .tablet-mockup-frame {
+            position: relative;
+            width: 360px;
+            height: 520px;
+            background: #1e293b;
+            border-radius: 30px;
+            padding: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            margin: 0 auto;
+        }
+
+        .tablet-screen-content {
+            width: 100%;
+            height: 100%;
+            background: #f1f5f9;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .map-marker {
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            background: var(--accent-color);
+            border: 3px solid white;
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            animation: bounceIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .map-marker::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        /* Marker Types */
+        .marker-shop { background: #3b82f6; top: 40%; left: 30%; animation-delay: 0.2s; }
+        .marker-target { background: #f97316; top: 60%; left: 60%; animation-delay: 0.4s; }
+        .marker-home { background: #22c55e; top: 20%; left: 70%; animation-delay: 0.6s; }
+
+        .route-path {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes dash {
+            to { stroke-dashoffset: 0; }
+        }
+
+
+        /* Slide 8: Route Animation (Looping & Refined) */
+        .route-visual-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f8fafc;
+            background-image: radial-gradient(#cbd5e1 1.5px, transparent 1.5px);
+            background-size: 20px 20px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.05); /* Inner shadow for depth */
+        }
+
+        .path-group {
+            /* Common styles if needed */
+            transition: opacity 1s ease;
+        }
+
+        .path-messy {
+            animation: messyLoop 8s infinite ease-in-out;
+        }
+
+        .path-clean {
+            animation: cleanLoop 8s infinite ease-in-out;
+        }
+        
+        .clean-path-line {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: drawLineLoop 8s infinite ease-in-out;
+            filter: drop-shadow(0 4px 6px rgba(249, 115, 22, 0.4)); /* Glow effect */
+        }
+
+        @keyframes messyLoop {
+            0%, 25% { opacity: 1; }
+            30%, 85% { opacity: 0; }
+            90%, 100% { opacity: 1; }
+        }
+
+        @keyframes cleanLoop {
+            0%, 25% { opacity: 0; }
+            30%, 85% { opacity: 1; }
+            90%, 100% { opacity: 0; }
+        }
+
+        @keyframes drawLineLoop {
+            0%, 25% { stroke-dashoffset: 1000; }
+            40%, 80% { stroke-dashoffset: 0; }
+            90%, 100% { stroke-dashoffset: 1000; }
+        }
+
+        /* Slide 9: Comparison */
+        .comparison-container {
+            display: flex;
+            width: 100%;
+            gap: 0; /* Seamless middle if wanted, or gap */
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            height: 400px;
+        }
+
+        .comp-side {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .comp-before {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+
+        .comp-after {
+            background: linear-gradient(135deg, var(--primary-color), #2563eb);
+            color: white;
+        }
+
+        .comp-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .comp-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .comp-list li {
+            font-size: 18px;
+            margin-bottom: 12px;
+            padding-left: 0;
+            list-style: none; /* Override default */
+            opacity: 1 !important; /* Override default slide anims for simplicity here, or keep them */
+            transform: none !important;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .comp-before .comp-list li::before {
+             content: '✕';
+             color: #ef4444;
+             position: static;
+             font-size: 18px;
+        }
+
+        .comp-after .comp-list li::before {
+             content: '✓';
+             color: #4ade80;
+             position: static;
+             font-size: 18px;
+             font-weight: bold;
+        }
+
+
+        /* Slide 10: Radar & Popup */
+        .radar-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .radar-circle {
+            position: absolute;
+            border: 2px solid rgba(249, 115, 22, 1);
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            animation: radarPulse 3s infinite;
+            opacity: 0;
+        }
+
+        .radar-circle:nth-child(1) { animation-delay: 0s; }
+        .radar-circle:nth-child(2) { animation-delay: 1s; }
+        .radar-circle:nth-child(3) { animation-delay: 2s; }
+
+        .phone-mockup-small {
+            width: 160px;
+            height: 320px;
+            background: #1e293b;
+            border-radius: 20px;
+            border: 4px solid #334155;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transform: translateY(20px);
+            animation: slideUpPhone 1s ease-out forwards;
+        }
+
+        .phone-screen {
+            background: white;
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .popup-store {
+            position: absolute;
+            background: white;
+            padding: 8px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 10px;
+            font-weight: bold;
+            color: #1e293b;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            opacity: 0;
+            transform: scale(0);
+        }
+        
+        .popup-1 { top: 30%; left: 10%; animation-delay: 1.2s; }
+        .popup-2 { top: 60%; right: 10%; animation-delay: 1.8s; }
+        .popup-add-btn {
+            width: 20px;
+            height: 20px;
+            background: #22c55e;
+            color: white;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        @keyframes radarPulse {
+            0% { width: 50px; height: 50px; opacity: 0.8; border-width: 4px; }
+            100% { width: 400px; height: 400px; opacity: 0; border-width: 0px; }
+        }
+        
+        @keyframes slideUpPhone {
+            to { transform: translateY(0); }
+        }
+
+        /* Slide 11: Notifications */
+        .notification-stack {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 320px;
+            /* Removed gap to control spacing via margin for animation */
+        }
+
+        .notification-card {
+            background: white;
+            border-left: 4px solid var(--accent-color);
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            
+            /* Initial Hidden State for Animation */
+            max-height: 0;
+            padding: 0 16px;
+            margin-bottom: 0;
+            opacity: 0;
+            overflow: hidden;
+            transform: translateY(-20px) scale(0.95);
+            
+            animation: notificationLoop 10s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+        }
+        
+        /* Sequence: Bottom-up appearance to simulate stacking */
+        /* Card 3 (Support) appears first */
+        .notification-card:nth-child(3) { 
+            border-color: #22c55e; 
+            animation-delay: 0s; 
+        }
+        
+        /* Card 2 (Promo) slides in atop Card 3 */
+        .notification-card:nth-child(2) { 
+            border-color: #f97316; 
+            animation-delay: 1.5s; 
+        }
+        
+        /* Card 1 (New) slides in atop Card 2, pushing stack down */
+        .notification-card:nth-child(1) { 
+            border-color: #3b82f6; 
+            animation-delay: 3.0s; 
+        }
+
+        @keyframes notificationLoop {
+            0% {
+                max-height: 0;
+                padding-top: 0;
+                padding-bottom: 0;
+                margin-bottom: 0;
+                opacity: 0;
+                transform: translateY(-20px) scale(0.95);
+            }
+            5%, 85% {
+                max-height: 200px; /* Allow expansion to fit content */
+                padding-top: 16px;
+                padding-bottom: 16px;
+                margin-bottom: 16px;
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            90%, 100% {
+                max-height: 0;
+                padding-top: 0;
+                padding-bottom: 0;
+                margin-bottom: 0;
+                opacity: 0;
+                transform: translateY(-20px) scale(0.95);
+            }
+        }
+
+        /* Slide 12: Dashboard Mockup */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 12px;
+            padding: 16px;
+            height: 100%;
+        }
+
+        .dash-item {
+            background: white;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+            gap: 8px;
+        }
+        
+        .dash-large {
+            grid-column: span 2;
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            color: #1e3a8a;
+        }
+
+        /* Slide 18+: Charts & Data */
+        .chart-container {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 40px;
+            height: 100%;
+            padding-bottom: 40px;
+            position: relative;
+        }
+
+        .chart-bar-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+        }
+
+        .chart-bar {
+            width: 80px;
+            background: #e2e8f0;
+            border-radius: 12px 12px 0 0;
+            transition: height 1s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            transform-origin: bottom;
+            animation: growBar 1s ease-out forwards;
+        }
+        
+        .chart-bar.highlight {
+            background: linear-gradient(180deg, #3b82f6 0%, #1e40af 100%);
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        .chart-label {
+            font-weight: bold;
+            color: #64748b;
+        }
+
+        .chart-val {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        @keyframes growBar {
+            from { transform: scaleY(0); }
+            to { transform: scaleY(1); }
+        }
+
+        .growth-arrow {
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 40px;
+            color: #22c55e;
+            animation: bounceIn 0.8s 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            opacity: 0;
+        }
+
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            width: 100%;
+        }
+
+        .impact-card {
+            background: white;
+            padding: 24px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+            border-top: 5px solid transparent;
+        }
+        
+        .impact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Timeline Styles */
+        .timeline-container {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            padding-top: 20px;
+            width: 100%;
+        }
+        
+        .timeline-line {
+            position: absolute;
+            top: 32px;
+            left: 15%;
+            right: 15%;
+            height: 4px;
+            background: #e2e8f0;
+            z-index: 0;
+        }
+        
+        .timeline-item {
+            position: relative;
+            z-index: 1;
+            width: 30%;
+            text-align: center;
+            opacity: 0;
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
+        
+        .timeline-item:nth-child(2) { animation-delay: 0.2s; }
+        .timeline-item:nth-child(3) { animation-delay: 0.4s; }
+        .timeline-item:nth-child(4) { animation-delay: 0.6s; }
+        
+        .timeline-dot {
+            width: 24px;
+            height: 24px;
+            background: var(--primary-color);
+            border: 4px solid white;
+            border-radius: 50%;
+            margin: 0 auto 24px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
     </style>
 </head>
 <body>
@@ -579,6 +1158,7 @@
     <!-- Header / Tab Bar -->
     <header class="app-header">
         <div class="logo">
+            <!-- Logos -->
             <img src="./claude-presentation-tool/assets/cx-icon.png" alt="CollabX Logo" style="height: 32px; margin-right: 8px;">
             <img src="./claude-presentation-tool/assets/pty-icon.png" alt="Patanayont Logo" style="height: 32px;">
         </div>
@@ -586,8 +1166,8 @@
             <div class="tab-item active" onclick="goToSection(0)">Introduction</div>
             <div class="tab-item" onclick="goToSection(5)">Solution</div>
             <div class="tab-item" onclick="goToSection(10)">User Journey</div>
-            <div class="tab-item" onclick="goToSection(16)">Business Impact</div>
-            <div class="tab-item" onclick="goToSection(21)">Conclusion</div>
+            <div class="tab-item" onclick="goToSection(15)">Business Impact</div>
+            <div class="tab-item" onclick="goToSection(20)">Conclusion</div>
         </nav>
     </header>
 
@@ -607,9 +1187,6 @@
                 </div>
             </div>
         </article>
-
-        <!-- Slide 2: Company Overview (REMOVED) -->
-        <!-- <article class="slide"> ... </article> -->
 
         <!-- Slide 2: Operational Workflow (Redesigned) -->
         <article class="slide">
@@ -766,39 +1343,33 @@
         <!-- Slide 5: Strategic Solutions (Redesigned) -->
         <article class="slide">
             <div class="content-grid full-width">
-                <h2>Strategic Solutions</h2>
-                <p style="text-align: center; color: #64748b; margin-top: -10px;">Scaling performance without increasing headcount</p>
+                <h2>Strategic Solutions & Key Objectives</h2>
+                <p style="text-align: center; color: #64748b; margin-top: -10px;">Scaling performance without increasing headcount (Scale Up)</p>
                 
-                <div class="card-container" style="align-items: stretch; margin-top: 40px;">
+                <div class="solution-card-grid">
                     
-                    <!-- Solution 1 -->
-                    <div class="challenge-card fade-in-up delay-100" style="border-top-color: #22c55e;">
-                        <div class="challenge-badge badge-green">Solution 1: Efficiency</div>
-                        <div style="font-size: 40px; margin-bottom: 16px;">⚡️</div>
-                        <h4 style="font-size: 20px; margin: 0 0 10px 0; color: #1e293b;">Smart Routing</h4>
-                        <p style="font-size: 16px; color: #64748b;">Automated route planning reduces travel time.</p>
-                        <hr style="border: 0; border-top: 1px solid #f1f5f9; margin: 15px 0;">
-                        <strong style="color: #166534;">Save 15-20 mins/deal</strong>
+                    <!-- Solution 1: Efficiency -->
+                    <div class="solution-card fade-in-up delay-100" style="--card-color: #16a34a; --bg-tint: #dcfce7;">
+                        <div class="solution-icon-box">⚡️</div>
+                        <h4 style="font-size: 22px; color: #1e293b; margin-bottom: 10px;">Efficiency</h4>
+                        <p style="color: #64748b; margin-bottom: 20px;">Automated route planning reduces travel time and fuel consumption.</p>
+                        <div class="metric-badge">Save 15-20 mins/deal</div>
                     </div>
 
-                    <!-- Solution 2 -->
-                    <div class="challenge-card fade-in-up delay-200" style="border-top-color: #3b82f6;">
-                        <div class="challenge-badge badge-blue">Solution 2: Capacity</div>
-                        <div style="font-size: 40px; margin-bottom: 16px;">📈</div>
-                        <h4 style="font-size: 20px; margin: 0 0 10px 0; color: #1e293b;">Route Optimization</h4>
-                        <p style="font-size: 16px; color: #64748b;">Fit more stops into the same working hours.</p>
-                        <hr style="border: 0; border-top: 1px solid #f1f5f9; margin: 15px 0;">
-                        <strong style="color: #1e40af;">+2 Visits / Day</strong>
+                    <!-- Solution 2: Capacity -->
+                    <div class="solution-card fade-in-up delay-200" style="--card-color: #3b82f6; --bg-tint: #dbeafe;">
+                        <div class="solution-icon-box">📈</div>
+                        <h4 style="font-size: 22px; color: #1e293b; margin-bottom: 10px;">Capacity</h4>
+                        <p style="color: #64748b; margin-bottom: 20px;">Optimization enables fitting more store visits into the same workday.</p>
+                        <div class="metric-badge">+2 Visits / Day</div>
                     </div>
 
-                    <!-- Solution 3 -->
-                    <div class="challenge-card fade-in-up delay-300" style="border-top-color: #a855f7;">
-                        <div class="challenge-badge badge-purple">Solution 3: Conversion</div>
-                        <div style="font-size: 40px; margin-bottom: 16px;">🤝</div>
-                        <h4 style="font-size: 20px; margin: 0 0 10px 0; color: #1e293b;">Real-time Data</h4>
-                        <p style="font-size: 16px; color: #64748b;">Instant info for faster decision making.</p>
-                        <hr style="border: 0; border-top: 1px solid #f1f5f9; margin: 15px 0;">
-                        <strong style="color: #6b21a8;">Faster Closing</strong>
+                    <!-- Solution 3: Conversion -->
+                    <div class="solution-card fade-in-up delay-300" style="--card-color: #8b5cf6; --bg-tint: #ede9fe;">
+                        <div class="solution-icon-box">🤝</div>
+                        <h4 style="font-size: 22px; color: #1e293b; margin-bottom: 10px;">Conversion</h4>
+                        <p style="color: #64748b; margin-bottom: 20px;">Real-time data access empowers sales reps to close deals faster.</p>
+                        <div class="metric-badge">Faster Closing</div>
                     </div>
 
                 </div>
@@ -809,144 +1380,235 @@
 
         <!-- Slide 6: Solution Overview (Animated Mockup) -->
         <article class="slide">
-            <div class="content-grid">
+            <div class="content-grid" style="grid-template-columns: 1.2fr 1fr; align-items: center;">
                 <div class="text-col">
-                    <h2>Introducing <span style="color: var(--primary-color);">CollabX_Route</span></h2>
-                    <p class="highlight">Sales Enablement & Route Intelligence Platform</p>
-                    <ul style="margin-top: 30px;">
-                        <li><strong>Live Route Tracking:</strong><br>See current location and innovative path finding.</li>
-                        <li><strong>Interactive Map:</strong><br>Tap to view store details and check-in.</li>
-                        <li><strong>Seamless Navigation:</strong><br>Integrated UI for sales workflow.</li>
+                    <h2 style="font-size: 36px; margin-bottom: 16px;">Introducing <span style="color: var(--primary-color);">CollabX Route</span></h2>
+                    <p class="highlight" style="font-size: 20px; color: #475569; margin-bottom: 30px;">Sales Enablement & Route Intelligence Platform</p>
+                    
+                    <ul style="gap: 16px; display: flex; flex-direction: column;">
+                        <li class="fade-in-up delay-100" style="padding-left: 0; display: flex; align-items: center; gap: 16px;">
+                            <span style="width: 40px; height: 40px; background: #e0f2fe; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px;">🗺️</span>
+                            <div>
+                                <strong style="display: block; color: #1e293b;">Live Route Tracking</strong>
+                                <span style="font-size: 16px; color: #64748b;">Intelligent pathfinding & GPS navigation.</span>
+                            </div>
+                        </li>
+                        <li class="fade-in-up delay-200" style="padding-left: 0; display: flex; align-items: center; gap: 16px;">
+                            <span style="width: 40px; height: 40px; background: #ffedd5; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px;">📍</span>
+                            <div>
+                                <strong style="display: block; color: #1e293b;">Interactive Map</strong>
+                                <span style="font-size: 16px; color: #64748b;">Visual store details and check-in status.</span>
+                            </div>
+                        </li>
+                        <li class="fade-in-up delay-300" style="padding-left: 0; display: flex; align-items: center; gap: 16px;">
+                            <span style="width: 40px; height: 40px; background: #d1fae5; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px;">🧭</span>
+                            <div>
+                                <strong style="display: block; color: #1e293b;">Seamless Workflow</strong>
+                                <span style="font-size: 16px; color: #64748b;">Integrated UI for end-to-end sales process.</span>
+                            </div>
+                        </li>
                     </ul>
                 </div>
-                <div class="visual-area" style="background: transparent; box-shadow: none;">
-                    <div class="mockup-tablet">
-                         <div class="mockup-header"></div>
-                         <div class="tablet-screen">
-                             <!-- Header -->
-                             <div class="app-header-mock">
-                                 <span style="font-weight: 700; color: var(--primary-color);">CollabX</span>
-                                 <span style="font-size: 12px; color: #94a3b8;">User: Sales Rep 01</span>
-                             </div>
-                             <!-- Map -->
-                             <div class="map-area">
-                                 <div class="map-pin pin-1">🏬</div>
-                                 <div class="map-route"></div>
-                                 <div class="map-pin pin-2">🏬</div>
-                                 <div class="click-effect"></div> <!-- Tap animation -->
-                                 <div class="map-pin pin-3">🏠</div>
-                                 
-                                 <!-- Floating Search -->
-                                 <div style="position: absolute; top: 10px; left: 10px; right: 10px; background: white; padding: 8px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); font-size: 12px; color: #cbd5e1;">
-                                     🔍 Search Location...
-                                 </div>
-                             </div>
-                             <!-- Bottom Nav -->
-                             <div class="bottom-nav-mock">
-                                 <div class="nav-item-mock active">🗺️</div>
-                                 <div class="nav-item-mock">💬</div>
-                                 <div class="nav-item-mock">🛒</div>
-                                 <div class="nav-item-mock">⚙️</div>
-                             </div>
-                         </div>
+                
+                <div class="visual-area" style="background: transparent; box-shadow: none; height: auto;">
+                    <div class="tablet-mockup-frame fade-in-up delay-200">
+                        <div class="tablet-screen-content">
+                            <!-- Header -->
+                            <div style="height: 50px; background: white; padding: 0 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e2e8f0; z-index: 10;">
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <div style="width: 24px; height: 24px; background: var(--primary-color); border-radius: 6px;"></div>
+                                    <span style="font-weight: 700; color: #1e293b;">CollabX</span>
+                                </div>
+                                <div style="width: 30px; height: 30px; background: #f1f5f9; border-radius: 50%;"></div>
+                            </div>
+                            
+                            <!-- Search Bar (Glass) -->
+                            <div class="glass-panel" style="position: absolute; top: 60px; left: 16px; right: 16px; padding: 12px; border-radius: 12px; z-index: 10;">
+                                <div style="display: flex; gap: 8px; color: #94a3b8; font-size: 14px; align-items: center;">
+                                    <span>🔍</span> Find customer or route...
+                                </div>
+                            </div>
+                            
+                            <!-- Map Content -->
+                            <div style="flex: 1; position: relative; background-color: #e5e5f7; opacity: 0.8; background-image: radial-gradient(#444cf7 0.5px, #e5e5f7 0.5px); background-size: 10px 10px;">
+                                <svg class="route-path" viewBox="0 0 360 400">
+                                    <path d="M110 160 Q 200 200 216 240" stroke="#3b82f6" stroke-width="4" fill="none" stroke-dasharray="10" />
+                                    <path d="M216 240 Q 240 150 250 80" stroke="#3b82f6" stroke-width="4" fill="none" stroke-dasharray="10" />
+                                </svg>
+                                
+                                <div class="map-marker marker-shop"></div>
+                                <div class="map-marker marker-target"></div>
+                                <div class="map-marker marker-home"></div>
+                            </div>
+                            
+                            <!-- Bottom Nav (Glass) -->
+                            <div class="glass-panel" style="position: absolute; bottom: 16px; left: 16px; right: 16px; padding: 16px; border-radius: 16px; z-index: 10; display: flex; justify-content: space-around;">
+                                <span style="font-size: 20px; color: var(--primary-color); transform: scale(1.1);">🗺️</span>
+                                <span style="font-size: 20px; opacity: 0.5;">💬</span>
+                                <span style="font-size: 20px; opacity: 0.5;">🛒</span>
+                                <span style="font-size: 20px; opacity: 0.5;">⚙️</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </article>
 
-         <!-- Slide 5 (New): Value Prop (REMOVED) -->
-         <!-- <article class="slide"> ... </article> -->
 
-        <!-- Slide 5: Smart Routes -->
+
+        <!-- Slide 7: Smart Routes -->
         <article class="slide">
             <div class="content-grid">
                 <div class="text-col">
                     <h2>Feature 1: Smart Routes</h2>
                     <h3 style="color: var(--accent-color);">Dynamic Route Engine</h3>
-                    <ul>
-                        <li><strong>Real-time Analysis:</strong> Traffic, Closures, Accidents</li>
-                        <li><strong>Smart Sequence:</strong> Re-orders stops for shortest path</li>
-                        <li><strong>Adaptive:</strong> Adjusts recommendations daily</li>
+                    <p style="color: #64748b; margin-bottom: 30px;">Transforming chaos into calculated efficiency.</p>
+                    <ul style="margin-bottom: 24px; line-height: 1.8;">
+                        <li><strong>Real-time Analysis:</strong> Instantly adapts to traffic & closures.</li>
+                        <li><strong>Smart Sequencing:</strong> Re-orders 50+ stops for the shortest daily path.</li>
+                        <li><strong>Adaptive Intelligence:</strong> Learns from driver history to improve daily.</li>
                     </ul>
                 </div>
-                <div class="visual-area">
-                     <!-- Simplified Map Graphic -->
-                     <svg width="300" height="200" viewBox="0 0 300 200">
-                         <!-- Route Line -->
-                         <path d="M50 150 L100 80 L200 50 L250 120" stroke="#f97316" stroke-width="4" fill="none" class="fade-in-up delay-500"/>
-                         <!-- Points -->
-                         <circle cx="50" cy="150" r="8" fill="#1e3a8a" />
-                         <circle cx="100" cy="80" r="6" fill="#1e3a8a" />
-                         <circle cx="200" cy="50" r="6" fill="#1e3a8a" />
-                         <circle cx="250" cy="120" r="6" fill="#1e3a8a" />
-                     </svg>
+                <!-- Visual Area with Looping Animation -->
+                <div class="visual-area fade-in-up delay-200" style="background: white; border: 1px solid #e2e8f0; padding: 0;">
+                     <div class="route-visual-container">
+                         <!-- Legend/Status Indicator -->
+                         <div style="position: absolute; top: 16px; left: 16px; z-index: 10; background: rgba(255,255,255,0.9); padding: 8px 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); font-size: 12px; font-weight: bold; display: flex; align-items: center; gap: 6px;">
+                             <div class="status-dot" style="width: 8px; height: 8px; border-radius: 50%; background: #22c55e; animation: pulse 2s infinite;"></div>
+                             Optimizing...
+                         </div>
+
+                         <svg width="350" height="300" viewBox="0 0 350 300" style="overflow: visible;">
+                             <!-- Definitions for markers -->
+                             <defs>
+                                <marker id="arrow" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto">
+                                  <path d="M0,0 L8,4 L0,8" fill="#94a3b8" />
+                                </marker>
+                                <marker id="arrow-clean" markerWidth="6" markerHeight="6" refX="6" refY="3" orient="auto">
+                                  <path d="M0,0 L6,3 L0,6" fill="#f97316" />
+                                </marker>
+                             </defs>
+
+                             <!-- Stores (Fixed Positions) -->
+                             <circle cx="175" cy="150" r="18" fill="#1e3a8a" stroke="#fff" stroke-width="3" style="filter: drop-shadow(0 4px 3px rgba(0,0,0,0.2));" /> <!-- HQ -->
+                             <text x="175" y="154" text-anchor="middle" font-size="10" fill="white" font-weight="bold" dy=".3em">HQ</text>
+
+                             <g id="stops">
+                                 <circle cx="50" cy="50" r="10" fill="#64748b" stroke="white" stroke-width="2" />
+                                 <circle cx="300" cy="80" r="10" fill="#64748b" stroke="white" stroke-width="2" />
+                                 <circle cx="80" cy="250" r="10" fill="#64748b" stroke="white" stroke-width="2" />
+                                 <circle cx="280" cy="220" r="10" fill="#64748b" stroke="white" stroke-width="2" />
+                                 <circle cx="150" cy="40" r="10" fill="#64748b" stroke="white" stroke-width="2" />
+                             </g>
+
+                             <!-- Messy Paths (Before) -->
+                             <g class="path-group path-messy">
+                                 <path d="M175 150 L50 50 L300 80 L80 250 L280 220 L150 40 L175 150" 
+                                       stroke="#cbd5e1" stroke-width="3" fill="none" marker-end="url(#arrow)" stroke-dasharray="8,8" stroke-linecap="round" />
+                                 <rect x="110" y="260" width="130" height="30" rx="15" fill="#fee2e2" stroke="#ef4444" stroke-width="1" />
+                                 <text x="175" y="280" text-anchor="middle" fill="#dc2626" font-weight="bold" font-size: 14px; dominant-baseline="middle">Manual Mode</text>
+                             </g>
+
+                             <!-- Clean Path (After) -->
+                             <g class="path-group path-clean">
+                                 <path class="clean-path-line" 
+                                       d="M175 150 L150 40 L50 50 L80 250 L280 220 L300 80 L175 150" 
+                                       stroke="#f97316" stroke-width="5" fill="none" marker-end="url(#arrow-clean)" stroke-linecap="round" stroke-linejoin="round" />
+                                 <rect x="110" y="260" width="130" height="30" rx="15" fill="#fff7ed" stroke="#f97316" stroke-width="1" />
+                                 <text x="175" y="280" text-anchor="middle" fill="#ea580c" font-weight="bold" font-size: 14px; dominant-baseline="middle">Optimized</text>
+                             </g>
+                         </svg>
+                     </div>
                 </div>
             </div>
         </article>
 
-        <!-- Slide 9: Before vs After -->
-        <article class="slide">
-            <div class="content-grid full-width">
-                 <h2>The Routing Advantage</h2>
-                 <div class="card-container">
-                     <div class="card" style="border-left-color: #ef4444;">
-                         <h4 style="color: #ef4444;">Before (Old)</h4>
-                         <ul>
-                             <li>Static Monthly Plan</li>
-                             <li>Manual Adjustments</li>
-                             <li>Personal Experience Based</li>
-                         </ul>
-                     </div>
-                     <div class="card" style="border-left-color: #22c55e;">
-                         <h4 style="color: #22c55e;">After (CollabX)</h4>
-                         <ul>
-                             <li>Dynamic Real-time Intelligence</li>
-                             <li>Data-Driven Decisions</li>
-                             <li>Increased Selling Time</li>
-                         </ul>
-                     </div>
-                 </div>
-            </div>
-        </article>
-
-        <!-- Slide 10: Nearby Discovery -->
+        <!-- Slide 8: Nearby Discovery -->
         <article class="slide">
             <div class="content-grid">
                 <div class="text-col">
                     <h2>Feature 2: Nearby Store Discovery</h2>
                     <h3>Turn "Dead Time" into "Deals"</h3>
                     <p>Integrate non-member store suggestions directly onto the map.</p>
-                    <ul>
-                        <li>Search "Spare Parts Store"</li>
-                        <li>Visualize potential clients nearby</li>
-                        <li>One-tap "Add to Route"</li>
+                    <ul style="margin-bottom: 24px;">
+                        <li><strong>Geo-Fencing:</strong> Identify potential clients within 1km.</li>
+                        <li><strong>One-Tap Add:</strong> Instantly recalculate route to include stop.</li>
+                        <li><strong>Lead Capture:</strong> Snap photo & register new shop on the spot.</li>
                     </ul>
-                    <p class="highlight">Result: Organic Territory Expansion</p>
                 </div>
-                <div class="visual-area">
-                    <span style="font-size: 64px;">📍 ➕ 🏪</span>
+                <div class="visual-area" style="background: transparent;">
+                    <div class="radar-container">
+                        <!-- Radar Waves -->
+                        <div class="radar-circle" style="z-index: 10;"></div>
+                        <div class="radar-circle" style="z-index: 10;"></div>
+                        <div class="radar-circle" style="z-index: 10;"></div>
+                        
+                        <!-- Phone Mockup -->
+                        <div class="phone-mockup-small">
+                            <div class="mockup-header" style="height: 24px; background: #e2e8f0; width: 100%;"></div>
+                            <div class="phone-screen" style="display: flex; align-items: center; justify-content: center; background: #f8fafc;">
+                                 <!-- Map Background -->
+                                 <div style="position: absolute; inset: 0; background-image: radial-gradient(#cbd5e1 1px, transparent 1px); background-size: 10px 10px;"></div>
+                                 <div style="width: 20px; height: 20px; background: var(--primary-color); border-radius: 50%; border: 3px solid white; z-index: 2;"></div>
+                                 
+                                 <!-- Popups -->
+                                 <div class="popup-store popup-1">
+                                     <span>🏪 Somchai Shop</span>
+                                     <div class="popup-add-btn">+</div>
+                                 </div>
+                                 <div class="popup-store popup-2">
+                                     <span>⚙️ Auto Parts Ltd</span>
+                                     <div class="popup-add-btn">+</div>
+                                 </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </article>
 
-        <!-- Slide 11: Alert Messaging -->
+        <!-- Slide 9: Alert Messaging -->
         <article class="slide">
              <div class="content-grid">
                  <div class="text-col">
                      <h2>Feature 3: Alert Messaging</h2>
                      <h3>Seamless Communication</h3>
-                     <ul>
+                     <p>Keep everyone in the loop without valid manual effort.</p>
+                     <ul style="margin-bottom: 24px; line-height: 1.8;">
                          <li><strong>Automated Alerts:</strong> "Van en route", "Arriving in 10 mins"</li>
-                         <li><strong>Marketing:</strong> Promotions, Points updates</li>
-                         <li><strong>Direct Channel:</strong> Integrated LINE OA messaging</li>
+                         <li><strong>Marketing Promotions:</strong> Push points updates & special offers.</li>
+                         <li><strong>Direct Channel:</strong> Integrated LINE OA messaging support.</li>
                      </ul>
-                     <p>Reduced waiting time = Happier customers</p>
                  </div>
-                 <div class="visual-area">
-                    <div style="background: white; padding: 20px; border-radius: 12px; width: 200px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-                        <div style="font-size: 12px; color: #999;">Notification</div>
-                        <div style="font-weight: bold; margin-bottom: 5px;">Patanayont Van</div>
-                        <div style="font-size: 14px;">Arriving in 10 mins 🚚</div>
+                 <div class="visual-area" style="background: transparent;">
+                    <div class="notification-stack">
+                        <!-- Notification 1 -->
+                        <div class="notification-card">
+                            <div style="width: 40px; height: 40px; background: #eff6ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px;">🚚</div>
+                                      <div>
+                                <div style="font-size: 12px; color: #94a3b8; margin-bottom: 2px;">System • Now</div>
+                                <div style="font-weight: bold; font-size: 14px; color: #1e293b;">Patanayont Van</div>
+                                <div style="font-size: 13px; color: #64748b;">Arriving at your shop in 10 mins!</div>
+                                      </div>
+                                  </div>
+                        <!-- Notification 2 -->
+                        <div class="notification-card">
+                            <div style="width: 40px; height: 40px; background: #fff7ed; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px;">🎁</div>
+                                      <div>
+                                <div style="font-size: 12px; color: #94a3b8; margin-bottom: 2px;">Promo • 5m ago</div>
+                                <div style="font-weight: bold; font-size: 14px; color: #1e293b;">Special Offer</div>
+                                <div style="font-size: 13px; color: #64748b;">Buy 2 tyres, get 500 bonus points.</div>
+                                      </div>
+                                  </div>
+                        <!-- Notification 3 -->
+                        <div class="notification-card">
+                            <div style="width: 40px; height: 40px; background: #f0fdf4; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px;">💬</div>
+                            <div>
+                                <div style="font-size: 12px; color: #94a3b8; margin-bottom: 2px;">Support • 1h ago</div>
+                                <div style="font-weight: bold; font-size: 14px; color: #1e293b;">New Message</div>
+                                <div style="font-size: 13px; color: #64748b;">"Can I adjust my order?"</div>
+                              </div>
+                         </div>
                     </div>
                  </div>
              </div>
@@ -954,87 +1616,188 @@
 
         <!-- --- SECTION 3: User Journey --- -->
 
-        <!-- Slide 12: UI Overview -->
+        <!-- Slide 10: UI Overview -->
         <article class="slide">
             <div class="content-grid">
                 <div class="text-col">
                     <h2>Intuitive UI Design</h2>
-                    <h3>4 Main Tabs</h3>
-                    <ol style="margin-left: 20px; line-height: 2;">
-                        <li><strong>Smart Routes:</strong> (Map & Navigation)</li>
-                        <li><strong>Chats:</strong> (Customer Communication)</li>
-                        <li><strong>Ordering:</strong> (Official Web Link)</li>
-                        <li><strong>Settings:</strong> (Profile & Config)</li>
-                    </ol>
+                    <h3>Everything you need, one tap away.</h3>
+                    <div style="display: flex; flex-direction: column; gap: 16px; margin-top: 24px;">
+                        <div class="solution-card fade-in-up delay-100" style="padding: 16px; flex-direction: row; gap: 16px; align-items: center;">
+                            <span style="font-size: 24px;">🗺️</span>
+                            <div>
+                                <strong>Smart Routes</strong>
+                                <div style="font-size: 14px; color: #64748b;">Navigation & Territory Map</div>
+                            </div>
+                        </div>
+                        <div class="solution-card fade-in-up delay-200" style="padding: 16px; flex-direction: row; gap: 16px; align-items: center;">
+                            <span style="font-size: 24px;">💬</span>
+                            <div>
+                                <strong>Chats</strong>
+                                <div style="font-size: 14px; color: #64748b;">Direct Customer Communication</div>
+                            </div>
+                        </div>
+                        <div class="solution-card fade-in-up delay-300" style="padding: 16px; flex-direction: row; gap: 16px; align-items: center;">
+                            <span style="font-size: 24px;">🛒</span>
+                            <div>
+                                <strong>Ordering</strong>
+                                <div style="font-size: 14px; color: #64748b;">Seamless Web Catalogue Link</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="visual-area">
-                     <div class="mockup-tablet">
-                         <div class="mockup-header"></div>
-                         <div class="mockup-body" style="display: flex; flex-direction: column; justify-content: flex-end;">
-                             <div style="height: 40px; background: #e2e8f0; border-top-left-radius: 8px; border-top-right-radius: 8px; display: flex; justify-content: space-around; align-items: center;">
-                                 <span>🗺️</span><span>💬</span><span>🛒</span><span>⚙️</span>
+                <div class="visual-area" style="background: transparent;">
+                     <div class="tablet-mockup-frame fade-in-up delay-200">
+                         <div class="tablet-screen-content" style="background: #f1f5f9;">
+                             <!-- Header -->
+                             <div style="height: 50px; background: white; border-bottom: 1px solid #e2e8f0;"></div>
+                             
+                             <!-- Dashboard Grid -->
+                             <div class="dashboard-grid">
+                                 <div class="dash-item dash-large">
+                                     <span style="font-size: 32px;">🗺️</span>
+                                     <span>Active Route</span>
+                                 </div>
+                                 <div class="dash-item">
+                                     <span style="font-size: 24px;">💬</span>
+                                     <span>Chats (3)</span>
+                                 </div>
+                                 <div class="dash-item">
+                                     <span style="font-size: 24px;">🛒</span>
+                                     <span>Orders</span>
+                                 </div>
+                                 <div class="dash-item dash-large" style="background: white; border: 1px dashed #cbd5e1;">
+                                     <span style="font-size: 24px; opacity: 0.5;">+ Add Widget</span>
+                                 </div>
                              </div>
+
+                             <!-- Bottom Nav -->
+                             <div class="glass-panel" style="position: absolute; bottom: 0; left: 0; right: 0; height: 60px; border-radius: 0; border-top: 1px solid rgba(255,255,255,0.5); display: flex; justify-content: space-around; align-items: center; z-index: 10;">
+                                 <span style="font-size: 24px; color: var(--primary-color);">🗺️</span>
+                                 <span style="font-size: 24px; opacity: 0.5;">💬</span>
+                                 <span style="font-size: 24px; opacity: 0.5;">🛒</span>
+                                 <span style="font-size: 24px; opacity: 0.5;">⚙️</span>
+                             </div>
+                         </div>
+                     </div>
+                </div>
+            </div>
+        </article>                     </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- Slide 11: Journey - Start of Day -->
+        <article class="slide">
+            <div class="content-grid">
+                <div class="text-col">
+                    <h2>Journey: Start of Day</h2>
+                    <h3>Seamless Login</h3>
+                    <p>Driver logs in to the provided tablet. Tasks are pre-loaded via cloud sync.</p>
+                </div>
+                <div class="visual-area" style="background: transparent;">
+                     <div class="tablet-mockup-frame fade-in-up delay-200">
+                         <div class="tablet-screen-content" style="background: #1e3a8a; display: flex; align-items: center; justify-content: center; flex-direction: column; color: white;">
+                             <div style="font-size: 32px; font-weight: bold; margin-bottom: 8px;">CollabX</div>
+                             <div style="font-size: 14px; opacity: 0.7; margin-bottom: 32px;">Route Intelligence</div>
+                             
+                             <div style="background: rgba(255,255,255,0.1); width: 200px; padding: 12px; border-radius: 8px; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.2);">Username</div>
+                             <div style="background: rgba(255,255,255,0.1); width: 200px; padding: 12px; border-radius: 8px; margin-bottom: 24px; border: 1px solid rgba(255,255,255,0.2);">••••••••</div>
+                             <div style="background: var(--accent-color); color: white; width: 200px; padding: 12px; border-radius: 8px; text-align: center; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">Sign In</div>
                          </div>
                      </div>
                 </div>
             </div>
         </article>
 
-        <!-- Slide 13: Scene 1 Login -->
+        <!-- Slide 12: Journey - Route Optimization -->
         <article class="slide">
-            <div class="content-grid full-width">
-                <h2>User Journey: Start of Day</h2>
-                <div class="visual-area" style="max-width: 600px; margin: 0 auto;">
-                    <div style="text-align: center;">
-                        <h3>Login</h3>
-                        <div style="background: white; padding: 20px; border-radius: 8px; width: 250px; margin: 20px auto; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-                            <div style="height: 10px; background: #e2e8f0; margin-bottom: 10px; border-radius: 4px;"></div>
-                            <div style="height: 10px; background: #e2e8f0; margin-bottom: 20px; border-radius: 4px;"></div>
-                            <div style="height: 30px; background: var(--primary-color); border-radius: 4px; color: white; line-height: 30px; font-size: 14px;">Sign In</div>
+            <div class="content-grid">
+                 <div class="text-col">
+                     <h2>Journey: Route Optimization</h2>
+                     <h3>Instant Computation</h3>
+                     <p>System loads today's 50+ stops, checks traffic, and draws the perfect line in seconds.</p>
+                     <div class="card fade-in-up" style="border-left: 4px solid #22c55e; margin-top: 20px;">
+                         <strong>Status:</strong> Optimized<br>
+                         <span style="font-size: 14px; color: #64748b;">Ready to start.</span>
+                     </div>
+                 </div>
+                 <div class="visual-area" style="background: transparent;">
+                     <div class="tablet-mockup-frame fade-in-up delay-200">
+                         <div class="tablet-screen-content">
+                             <div style="height: 50px; background: white; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; padding: 0 16px; font-weight: bold;">Today's Route</div>
+                             <div style="flex: 1; position: relative; background-color: #f8fafc; background-image: radial-gradient(#cbd5e1 1px, transparent 1px); background-size: 10px 10px;">
+                                 <!-- Reusing Route SVG with static optimized view -->
+                                 <svg width="100%" height="100%" viewBox="0 0 350 400" style="overflow: visible;">
+                                     <path d="M175 200 L150 90 L50 100 L80 300 L280 270 L300 130 L175 200" 
+                                           stroke="#f97316" stroke-width="4" fill="none" stroke-linejoin="round" />
+                                      <circle cx="175" cy="200" r="12" fill="#1e3a8a" stroke="white" stroke-width="2" />
+                                      <circle cx="50" cy="100" r="6" fill="#64748b" stroke="white" stroke-width="2" />
+                                      <circle cx="300" cy="130" r="6" fill="#64748b" stroke="white" stroke-width="2" />
+                                      <circle cx="80" cy="300" r="6" fill="#64748b" stroke="white" stroke-width="2" />
+                                      <circle cx="280" cy="270" r="6" fill="#64748b" stroke="white" stroke-width="2" />
+                                      <circle cx="150" cy="90" r="6" fill="#64748b" stroke="white" stroke-width="2" />
+                                      
+                                      <!-- Floating Status -->
+                                      <rect x="120" y="320" width="110" height="30" rx="15" fill="#f0fdf4" stroke="#22c55e" stroke-width="1" />
+                                      <text x="175" y="340" text-anchor="middle" fill="#15803d" font-weight="bold" font-size: 12px; dominant-baseline="middle">Route Ready</text>
+                                 </svg>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+            </div>
+        </article>
+
+        <!-- Slide 13: Journey - Mid-Day Discovery -->
+        <article class="slide">
+            <div class="content-grid">
+                <div class="text-col">
+                    <h2>Journey: Mid-Day Discovery</h2>
+                    <h3>Opportunity Strikes</h3>
+                    <p>Sales rep sees a gap in the schedule and checks for "Nearby Opportunities".</p>
+                    <ul class="comp-list">
+                        <li><strong>1. Tap "Find Nearby"</strong></li>
+                        <li><strong>2. See Options</strong></li>
+                        <li><strong>3. Add to Route</strong></li>
+                    </ul>
+                </div>
+                <div class="visual-area" style="background: transparent;">
+                    <div class="radar-container"> <!-- Reusing radar container styles -->
+                        <div class="radar-circle"></div>
+                        <div class="radar-circle"></div>
+                        
+                        <div class="phone-mockup-small">
+                            <div class="mockup-header" style="height: 24px; background: #e2e8f0; width: 100%;"></div>
+                            <div class="phone-screen" style="position: relative; background: #f8fafc;">
+                                 <div style="position: absolute; inset: 0; background-image: radial-gradient(#cbd5e1 1px, transparent 1px); background-size: 10px 10px;"></div>
+                                 <div style="position: absolute; top: 50%; left: 50%; width: 16px; height: 16px; background: var(--primary-color); border-radius: 50%; transform: translate(-50%, -50%); border: 2px solid white;"></div>
+                                 
+                                 <div class="popup-store" style="top: 20%; left: 10%; opacity: 1; transform: scale(1);">
+                                     <span>🏪 Shop A</span>
+                                     <div class="popup-add-btn">+</div>
+                                 </div>
+                                 <div class="popup-store" style="bottom: 30%; right: 10%; opacity: 1; transform: scale(1);">
+                                     <span>🛠️ Garage B</span>
+                                     <div class="popup-add-btn">+</div>
+                                 </div>
+                                 
+                                 <div style="position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); background: var(--primary-color); color: white; padding: 6px 16px; border-radius: 20px; font-size: 10px; font-weight: bold;">Scan Area</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </article>
 
-        <!-- Slide 14: Scene 2 Route Loading -->
-        <article class="slide">
-            <div class="content-grid full-width">
-                 <h2>Journey: Route Optimization</h2>
-                 <p>System loads tasks, checks traffic, and draws the perfect line.</p>
-                 <div class="visual-area" style="max-width: 600px; margin: 0 auto;">
-                     <span style="font-size: 40px;" class="fade-in-up">HQ 🏢 ➡️ 🏪 ➡️ 🏪 ➡️ 🏠</span>
-                 </div>
-            </div>
-        </article>
-
-        <!-- Slide 15: Scene 3 Discovery -->
-        <article class="slide">
-            <div class="content-grid full-width">
-                <h2>Journey: Mid-Day Discovery</h2>
-                <p>Sales rep sees a gap in the schedule and checks for "Nearby Opportunities".</p>
-                <div class="card-container">
-                    <div class="card">
-                        <h4>1. Tap "Find Nearby"</h4>
-                    </div>
-                    <div class="card">
-                        <h4>2. See Options</h4>
-                    </div>
-                    <div class="card">
-                        <h4>3. Add to Route</h4>
-                    </div>
-                </div>
-            </div>
-        </article>
-
-        <!-- Slide 16: Scene 4 Alerting -->
+        <!-- Slide 14: Journey - Arrival Automation -->
         <article class="slide">
             <div class="content-grid">
                 <div class="text-col">
                     <h2>Journey: Arrival Automation</h2>
                     <h3>Zero Friction</h3>
                     <p>As the van approaches the geofence...</p>
-                    <div class="card fade-in-up">
+                    <div class="card fade-in-up" style="border-left: 4px solid var(--primary-color);">
                         <p style="margin:0;"><strong>System:</strong> Sends "Arriving in 10 mins" line message.</p>
                         <hr style="margin: 10px 0; border: 0; border-top: 1px solid #eee;">
                         <p style="margin:0;"><strong>Customer:</strong> Gets notified, prepares cash/goods.</p>
@@ -1042,103 +1805,163 @@
                         <p style="margin:0;"><strong>Result:</strong> Sales rep arrives, customer is ready. No waiting.</p>
                     </div>
                 </div>
-                 <div class="visual-area">
-                    <span style="font-size: 60px;">📲 🤝</span>
+                 <div class="visual-area" style="background: transparent;">
+                    <div class="phone-mockup-small" style="width: 200px; transform: none; animation: none;">
+                        <div class="mockup-header" style="height: 24px; background: #e2e8f0; width: 100%;"></div>
+                        <div class="phone-screen" style="background: #dcfce7; padding: 16px; display: flex; flex-direction: column; gap: 8px;">
+                            <!-- Chat UI -->
+                            <div style="align-self: flex-start; background: white; padding: 8px; border-radius: 8px; font-size: 10px; max-width: 80%; box-shadow: 0 1px 2px rgba(0,0,0,0.1);">
+                                Hello! Your van is arriving in 10 mins. 🚚
+                            </div>
+                            <div style="align-self: flex-end; background: #22c55e; color: white; padding: 8px; border-radius: 8px; font-size: 10px; max-width: 80%; box-shadow: 0 1px 2px rgba(0,0,0,0.1);">
+                                Okay, I'll be ready! 👍
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </article>
 
-         <!-- Slide 17: Scene 5 Summary -->
-         <article class="slide">
-             <div class="content-grid full-width">
-                 <h2>Journey: End of Day</h2>
-                 <h3>Performance Dashboard</h3>
-                 <div class="card-container">
-                     <div class="card" style="text-align: center;">
-                         <span style="font-size: 30px; color: #22c55e;">100%</span>
-                         <p>Route Completion</p>
-                     </div>
-                     <div class="card" style="text-align: center;">
-                         <span style="font-size: 30px; color: var(--primary-color);">15</span>
-                         <p>Stores Visited</p>
-                     </div>
-                     <div class="card" style="text-align: center;">
-                         <span style="font-size: 30px; color: var(--accent-color);">$Top</span>
-                         <p>Sales Target</p>
-                     </div>
-                 </div>
-             </div>
-         </article>
+        <!-- Slide 15: Journey - End of Day -->
+        <article class="slide">
+              <div class="content-grid">
+                  <div class="text-col">
+                      <h2>Journey: End of Day</h2>
+                      <h3>Performance Dashboard</h3>
+                      <p>Driver sees daily summary instantly.</p>
+                      <ul class="comp-list">
+                          <li><strong>15 Stores Visited</strong></li>
+                          <li><strong>100% Route Completion</strong></li>
+                          <li><strong>$ Hit Daily Target</strong></li>
+                      </ul>
+                  </div>
+                  <div class="visual-area" style="background: transparent;">
+                       <div class="tablet-mockup-frame fade-in-up delay-200">
+                           <div class="tablet-screen-content" style="background: #f1f5f9;">
+                               <div style="height: 50px; background: white; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: center; align-items: center; font-weight: bold;">Daily Summary</div>
+                               
+                               <div style="padding: 24px; display: flex; flex-direction: column; gap: 16px;">
+                                   <div style="background: white; padding: 16px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border-left: 4px solid #22c55e;">
+                                       <span>Completion</span>
+                                       <span style="font-size: 24px; font-weight: bold; color: #22c55e;">100%</span>
+                                   </div>
+                                    <div style="background: white; padding: 16px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border-left: 4px solid #3b82f6;">
+                                       <span>Check-ins</span>
+                                       <span style="font-size: 24px; font-weight: bold; color: #3b82f6;">15/15</span>
+                                   </div>
+                                    <div style="background: white; padding: 16px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border-left: 4px solid #f97316;">
+                                       <span>Sales</span>
+                                       <span style="font-size: 24px; font-weight: bold; color: #f97316;">$Top</span>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                  </div>
+              </div>
+          </article>
 
         <!-- --- SECTION 4: Business Impact --- -->
 
-        <!-- Slide 16: Revenue Growth -->
+        <!-- Slide 16: Revenue Growth Model -->
         <article class="slide">
             <div class="content-grid">
                  <div class="text-col">
                      <h2>Revenue Growth Model</h2>
-                     <h3>Increased Daily Visits</h3>
-                     <ul>
-                         <li>Current: 12 stores/day</li>
-                         <li><strong>Optimized: 14-15+ stores/day</strong></li>
-                         <li>(+15-25% Capacity)</li>
+                     <h3>Unlock Hidden Capacity</h3>
+                     <ul class="comp-list">
+                         <li><strong>Current State:</strong> ~12 visits/day (capped by travel)</li>
+                         <li><strong>Optimized:</strong> 15+ visits/day (25% increase)</li>
+                         <li><strong>Value:</strong> More face time = More orders.</li>
                      </ul>
-                      <div class="card fade-in-up delay-300" style="background: #f0fdf4; border-left-color: #22c55e;">
-                         <h4>Impact Breakdown</h4>
-                         <p>+2 Stores/Day = <strong>High Growth 🚀</strong></p>
-                         <p style="font-size: 14px; opacity: 0.8;">(Significant increase in monthly revenue)</p>
+                      <div class="card fade-in-up delay-300" style="background: #f0fdf4; border-left: 4px solid #22c55e;">
+                         <span style="color: #22c55e; font-weight: bold; font-size: 14px; text-transform: uppercase;">Bottom Line</span>
+                         <h4 style="margin: 4px 0;">+3 Stores/Day = +60/Month</h4>
+                         <p style="margin: 0; opacity: 0.8;">Direct correlation to monthly revenue.</p>
                      </div>
                  </div>
-                 <div class="visual-area">
-                     <div style="display: flex; align-items: flex-end; height: 200px; gap: 20px;">
-                         <div style="width: 50px; height: 60%; background: #94a3b8; border-radius: 4px;"></div>
-                         <div style="width: 50px; height: 80%; background: #22c55e; border-radius: 4px;"></div>
+                 <div class="visual-area" style="background: transparent;">
+                     <div class="chart-container">
+                         <div class="chart-bar-col">
+                             <div class="chart-val" style="color: #64748b;">12</div>
+                             <div class="chart-bar" style="height: 160px; animation-delay: 0.2s;"></div>
+                             <div class="chart-label">Current</div>
+                         </div>
+                         <div class="chart-bar-col">
+                             <div class="growth-arrow" style="top: 0;">↗</div>
+                             <div class="chart-val" style="color: #2563eb;">15+</div>
+                             <div class="chart-bar highlight" style="height: 240px; animation-delay: 0.6s;"></div>
+                             <div class="chart-label" style="color: #2563eb;">With CollabX</div>
+                         </div>
                      </div>
                  </div>
             </div>
         </article>
 
-        <!-- Slide 17: Upsell Impact -->
+        <!-- Slide 17: Upsell & Promotion -->
         <article class="slide">
             <div class="content-grid">
                  <div class="text-col">
                      <h2>Upsell & Promotion</h2>
-                     <h3>Structured Display</h3>
-                     <ul>
-                         <li>Real-time product visibility</li>
-                         <li>Promotion alerts on Tablet</li>
+                     <h3>Structured Selling</h3>
+                     <p>Empower drivers with real-time data at the point of sale.</p>
+                     <ul class="comp-list">
+                         <li><strong>Visual Catalogue:</strong> Show, don't just tell.</li>
+                         <li><strong>Smart Alerts:</strong> "Customer X usually buys Y."</li>
+                         <li><strong>Instant Promos:</strong> Close deals on the spot.</li>
                      </ul>
-                      <div class="card fade-in-up delay-300" style="background: #f0fdf4; border-left-color: #22c55e;">
-                         <h4>Impact Breakdown</h4>
-                         <p>avg order increase 5-10%</p>
-                         <p><strong>Target: 5-10% Uplift 📈</strong></p>
-                     </div>
                  </div>
-                <div class="visual-area">
-                    <span style="font-size: 60px;">📈 💰</span>
+                <div class="visual-area" style="background: transparent;">
+                    <div style="position: relative; width: 300px; height: 300px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 20px 40px rgba(0,0,0,0.1);">
+                        <div style="text-align: center;">
+                            <div style="font-size: 16px; color: #64748b; margin-bottom: 8px;">Avg Order Value</div>
+                            <div style="font-size: 48px; font-weight: 800; color: #22c55e;">+10%</div>
+                            <div style="font-size: 14px; color: #22c55e; background: #dcfce7; padding: 4px 12px; border-radius: 20px; display: inline-block; margin-top: 8px;">Target Uplift</div>
+                        </div>
+                        <!-- Orbiting Icons -->
+                        <div style="position: absolute; top: 0; left: 50%; transform: translate(-50%, -50%); font-size: 32px; background: white; width: 50px; height: 50px; border-radius: 50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center;">📦</div>
+                        <div style="position: absolute; bottom: 0; left: 50%; transform: translate(-50%, 50%); font-size: 32px; background: white; width: 50px; height: 50px; border-radius: 50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center;">🏷️</div>
+                    </div>
                 </div>
             </div>
         </article>
 
-        <!-- Slide 18: New Customer Impact -->
+        <!-- Slide 18: New Customer Acquisition -->
         <article class="slide">
             <div class="content-grid">
                 <div class="text-col">
                      <h2>New Customer Acquisition</h2>
-                     <h3>Nearby Store Feature</h3>
-                     <ul>
-                         <li>Target: 2 new stores/week</li>
-                         <li>8 new stores/month</li>
-                         <li>Recuring revenue model</li>
-                     </ul>
-                     <div class="card fade-in-up delay-300" style="background: #eff6ff; border-left-color: #3b82f6;">
-                         <h4>Recurring Value</h4>
-                         <p>8 new stores x 4 visits =</p>
-                         <p><strong>Exponential Growth 🌟</strong> (Cumulative)</p>
+                     <h3>Organic Network Growth</h3>
+                     <p>Turning dead-head miles into new business opportunities.</p>
+                     
+                     <div class="solution-card fade-in-up" style="flex-direction: row; gap: 20px; align-items: center; border-left: 4px solid #f97316;">
+                         <div style="font-size: 32px;">🌱</div>
+                         <div>
+                             <strong>The Goal</strong>
+                             <div style="color: #64748b;">2 New Stores / Week</div>
+                         </div>
+                     </div>
+                     
+                     <div class="solution-card fade-in-up delay-200" style="flex-direction: row; gap: 20px; align-items: center; border-left: 4px solid #3b82f6; margin-top: 16px;">
+                         <div style="font-size: 32px;">🌳</div>
+                         <div>
+                             <strong>The Result</strong>
+                             <div style="color: #64748b;">~100 New Clients / Year</div>
+                         </div>
                      </div>
                 </div>
-                 <div class="visual-area">
-                    <span style="font-size: 60px;">🆕 🏪</span>
+                 <div class="visual-area" style="background: transparent;">
+                    <div style="display: flex; gap: 20px; align-items: flex-end;">
+                         <!-- Funnel Visual -->
+                         <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                             <div style="width: 120px; height: 120px; background: #e0f2fe; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 40px; color: #3b82f6;">👀</div>
+                             <strong>Discovery</strong>
+                         </div>
+                         <div style="font-size: 30px; color: #cbd5e1; margin-bottom: 50px;">➜</div>
+                         <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                             <div style="width: 140px; height: 140px; background: #fff7ed; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 50px; color: #f97316; border: 4px solid white; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">🤝</div>
+                             <strong>Conversion</strong>
+                         </div>
+                    </div>
                 </div>
             </div>
         </article>
@@ -1147,46 +1970,55 @@
         <article class="slide">
             <div class="content-grid full-width">
                  <h2>Cost Optimization</h2>
-                 <div class="card-container">
-                     <div class="card">
-                         <span class="card-icon">⚡</span>
-                         <h4>EV Efficiency</h4>
-                         <p>-10% Driving Distance<br>Reduced energy & wear</p>
+                 <p style="text-align: center; margin-bottom: 40px;">Efficiency isn't just about speed; it's about savings.</p>
+                 <div class="impact-grid">
+                     <div class="impact-card fade-in-up delay-100" style="border-top-color: #ef4444;">
+                         <div style="font-size: 40px; margin-bottom: 16px;">⛽️</div>
+                         <h4 style="font-size: 20px; margin-bottom: 8px;">Fuel Savings</h4>
+                         <p style="color: #64748b;">-10% Driving Distance</p>
+                         <div style="margin-top: 12px; font-weight: bold; color: #ef4444;">Lower OpEx</div>
                      </div>
-                     <div class="card">
-                         <span class="card-icon">⏳</span>
-                         <h4>Time Savings</h4>
-                         <p>~70 mins/day saved<br>via automated alerts</p>
+                     <div class="impact-card fade-in-up delay-200" style="border-top-color: #f59e0b;">
+                         <div style="font-size: 40px; margin-bottom: 16px;">⏳</div>
+                         <h4 style="font-size: 20px; margin-bottom: 8px;">Time Savings</h4>
+                         <p style="color: #64748b;">~70 mins/day reclaimed</p>
+                         <div style="margin-top: 12px; font-weight: bold; color: #f59e0b;">Higher Productivity</div>
                      </div>
-                     <div class="card">
-                         <span class="card-icon">⚙️</span>
-                         <h4>Admin Ops</h4>
-                         <p>Reduced manual work<br>Streamlined workflow</p>
+                     <div class="impact-card fade-in-up delay-300" style="border-top-color: #3b82f6;">
+                         <div style="font-size: 40px; margin-bottom: 16px;">⚙️</div>
+                         <h4 style="font-size: 20px; margin-bottom: 8px;">Admin Ops</h4>
+                         <p style="color: #64748b;">Automated Reports</p>
+                         <div style="margin-top: 12px; font-weight: bold; color: #3b82f6;">Streamlined Workflow</div>
                      </div>
                  </div>
             </div>
         </article>
 
-        <!-- Slide 20: Scenario Summary -->
+        <!-- Slide 20: Projected Impact Summary -->
         <article class="slide">
-            <div class="content-grid">
-                <div class="text-col">
-                    <h2>Monthly Revenue Impact</h2>
-                    <p>Estimates based on single van model.</p>
-                    
-                    <div class="card fade-in-up delay-100" style="margin-bottom: 20px;">
-                        <h4>Conservative</h4>
-                        <p style="font-size: 24px; color: #64748b;">Level 1 Growth</p>
+            <div class="content-grid full-width">
+                <h2>Projected Impact Summary</h2>
+                 <p style="text-align: center; margin-bottom: 40px;">Consolidated benefits per single van unit.</p>
+                <div class="visual-area" style="background: white; border: 1px solid #e2e8f0; height: auto; padding: 40px;">
+                    <div style="display: flex; justify-content: space-around; width: 100%; text-align: center; gap: 40px;">
+                        <div class="fade-in-up delay-100">
+                             <div style="font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: #64748b; margin-bottom: 12px;">Monthly Visits</div>
+                             <div style="font-size: 48px; font-weight: 800; color: #1e293b;">+60</div>
+                             <div style="color: #22c55e; font-weight: bold;">▲ 25%</div>
+                        </div>
+                        <div style="width: 1px; background: #e2e8f0;"></div>
+                        <div class="fade-in-up delay-200">
+                             <div style="font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: #64748b; margin-bottom: 12px;">New Customers</div>
+                             <div style="font-size: 48px; font-weight: 800; color: #1e293b;">+8</div>
+                             <div style="color: #3b82f6; font-weight: bold;">Recurring</div>
+                        </div>
+                        <div style="width: 1px; background: #e2e8f0;"></div>
+                        <div class="fade-in-up delay-300">
+                             <div style="font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: #64748b; margin-bottom: 12px;">Revenue Uplift</div>
+                             <div style="font-size: 48px; font-weight: 800; color: #f97316;">High</div>
+                             <div style="color: #f97316; font-weight: bold;">Level 2 Growth</div>
+                        </div>
                     </div>
-                    
-                    <div class="card fade-in-up delay-300" style="background: #f0fdf4; border-left-color: #22c55e; transform: scale(1.05);">
-                        <h4>Moderate (Target)</h4>
-                        <p style="font-size: 32px; color: #22c55e; font-weight: bold;">Level 2 Growth 🚀</p>
-                        <p style="font-size: 14px;">(New visits + Upsell + New Customers)</p>
-                    </div>
-                </div>
-                <div class="visual-area">
-                     <span style="font-size: 80px;">💹</span>
                 </div>
             </div>
         </article>
@@ -1194,63 +2026,94 @@
 
         <!-- --- SECTION 5: Conclusion --- -->
 
-        <!-- Slide 23: Strategic Summary -->
+        <!-- Slide 21: Strategic Impact Summary -->
         <article class="slide">
              <div class="content-grid full-width">
                  <h2>Strategic Impact Summary</h2>
-                 <div class="card-container">
-                     <div class="card">
-                         <h4>Revenue</h4>
-                         <ul><li>Higher Capacity</li><li>Recurring Growth</li></ul>
+                 <p style="text-align: center; margin-bottom: 40px; color: #64748b;">Why CollabX plays to win.</p>
+                 <div class="impact-grid" style="max-width: 900px; margin: 0 auto;">
+                     <div class="impact-card fade-in-up delay-100">
+                         <div style="font-size: 40px; margin-bottom: 16px;">📈</div>
+                         <h4>Revenue Multiplier</h4>
+                         <ul class="comp-list" style="text-align: left; margin-top: 16px;">
+                             <li>Unlock 25% more capacity</li>
+                             <li>Recurring growth engine</li>
+                         </ul>
                      </div>
-                     <div class="card">
-                         <h4>Cost</h4>
-                         <ul><li>Lower Energy</li><li>Less Idle Time</li></ul>
+                     <div class="impact-card fade-in-up delay-200">
+                         <div style="font-size: 40px; margin-bottom: 16px;">📉</div>
+                         <h4>Cost Reducer</h4>
+                         <ul class="comp-list" style="text-align: left; margin-top: 16px;">
+                             <li>Lower fuel & energy costs</li>
+                             <li>Reduce idle time</li>
+                         </ul>
                      </div>
-                     <div class="card">
-                         <h4>Structure</h4>
-                         <ul><li>Scalable Model</li><li>Data-Driven</li></ul>
+                     <div class="impact-card fade-in-up delay-300">
+                         <div style="font-size: 40px; margin-bottom: 16px;">🏗️</div>
+                         <h4>Foundation for Scale</h4>
+                         <ul class="comp-list" style="text-align: left; margin-top: 16px;">
+                             <li>Data-driven culture</li>
+                             <li>Future-proof technology</li>
+                         </ul>
                      </div>
                  </div>
              </div>
         </article>
 
-        <!-- Slide 24: Roadmap -->
+        <!-- Slide 22: Implementation Roadmap -->
         <article class="slide">
             <div class="content-grid full-width">
                 <h2>Implementation Roadmap</h2>
-                <div style="display: flex; gap: 20px; text-align: left; margin-top: 40px; overflow-x: auto; padding-bottom: 20px;">
-                     <div class="card fade-in-up delay-100" style="min-width: 250px;">
-                         <div style="font-size: 14px; color: #999; margin-bottom: 5px;">Phase 1</div>
-                         <h4>Pilot Program</h4>
-                         <p>Small team, limited features, measure impact.</p>
-                     </div>
-                     <div style="font-size: 24px; align-self: center; color: #ccc;">➜</div>
-                     <div class="card fade-in-up delay-200" style="min-width: 250px;">
-                         <div style="font-size: 14px; color: #999; margin-bottom: 5px;">Phase 2</div>
-                         <h4>Full Rollout</h4>
-                         <p>Company-wide, training & onboarding.</p>
-                     </div>
-                     <div style="font-size: 24px; align-self: center; color: #ccc;">➜</div>
-                     <div class="card fade-in-up delay-300" style="min-width: 250px;">
-                         <div style="font-size: 14px; color: #999; margin-bottom: 5px;">Phase 3</div>
-                         <h4>Optimization</h4>
-                         <p>Analytics driven enhancement.</p>
-                     </div>
+                <div class="timeline-container">
+                    <div class="timeline-line"></div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="card" style="padding: 16px; border-top: 4px solid #64748b;">
+                            <div style="font-size: 12px; color: #94a3b8; font-weight: bold; text-transform: uppercase;">Phase 1</div>
+                            <h4 style="margin: 8px 0;">Pilot Program</h4>
+                            <p style="font-size: 14px;">Small team, limited features, measure impact.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-dot" style="background: #3b82f6;"></div>
+                        <div class="card" style="padding: 16px; border-top: 4px solid #3b82f6;">
+                            <div style="font-size: 12px; color: #3b82f6; font-weight: bold; text-transform: uppercase;">Phase 2</div>
+                            <h4 style="margin: 8px 0;">Full Rollout</h4>
+                            <p style="font-size: 14px;">Company-wide deployment, training & onboarding.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-dot" style="background: #22c55e;"></div>
+                        <div class="card" style="padding: 16px; border-top: 4px solid #22c55e;">
+                            <div style="font-size: 12px; color: #22c55e; font-weight: bold; text-transform: uppercase;">Phase 3</div>
+                            <h4 style="margin: 8px 0;">Optimization</h4>
+                            <p style="font-size: 14px;">Advanced analytics & ML model refinement.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </article>
 
-        <!-- Slide 22: Q&A -->
+        <!-- Slide 23: Q & A -->
         <article class="slide">
-            <div class="content-grid full-width">
-                <h1 class="fade-in-up">Q & A</h1>
-                <p class="fade-in-up delay-200" style="font-size: 24px; max-width: 800px; margin: 20px auto;">
+            <div class="content-grid full-width" style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+                <h1 class="fade-in-up" style="font-size: 80px; background: linear-gradient(135deg, #1e293b 0%, #334155 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">Q & A</h1>
+                <p class="fade-in-up delay-200" style="font-size: 24px; color: #64748b; margin-top: 20px;">
                     Thank you for your time.
                 </p>
-                <div class="fade-in-up delay-300" style="margin-top: 40px; text-align: center;">
-                    <div style="font-size: 80px; margin-bottom: 20px;">🙋‍♂️❓</div>
-                    <p style="font-size: 18px; color: #94a3b8;">CollabX_Route Presentation</p>
+                <div class="fade-in-up delay-300" style="margin-top: 60px; display: flex; gap: 40px; justify-content: center;">
+                    <div style="text-align: left;">
+                        <div style="font-weight: bold; color: #1e293b;">Contact Us</div>
+                        <div style="color: #64748b;">team@collabx.com</div>
+                    </div>
+                    <div style="width: 1px; background: #e2e8f0;"></div>
+                    <div style="text-align: left;">
+                         <div style="font-weight: bold; color: #1e293b;">Next Steps</div>
+                         <div style="color: #64748b;">Proposal Review</div>
+                    </div>
                 </div>
             </div>
         </article>
@@ -1262,7 +2125,7 @@
         <button class="nav-btn" onclick="prevSlide()" aria-label="Previous Slide">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
         </button>
-        <span class="page-indicator" id="pageIndicator">1 / 24</span>
+        <span class="page-indicator" id="pageIndicator">1 / 23</span>
         <button class="nav-btn" onclick="nextSlide()" aria-label="Next Slide">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
         </button>
@@ -1274,7 +2137,7 @@
         const pageIndicator = document.getElementById('pageIndicator');
         const tabItems = document.querySelectorAll('.tab-item');
         let currentSlide = 0;
-        const totalSlides = slides.length; // 24 slides total now
+        const totalSlides = slides.length; // 23 slides total
         
         function updateSlide(index) {
             // Bounds check
@@ -1318,8 +2181,8 @@
             
             if (currentSlide < 5) tabItems[0].classList.add('active');       // Intro (0-4)
             else if (currentSlide < 10) tabItems[1].classList.add('active');  // Solution (5-9)
-            else if (currentSlide < 16) tabItems[2].classList.add('active'); // Journey (10-15)
-            else if (currentSlide < 21) tabItems[3].classList.add('active'); // Impact (16-20)
+            else if (currentSlide < 15) tabItems[2].classList.add('active'); // Journey (10-14)
+            else if (currentSlide < 20) tabItems[3].classList.add('active'); // Impact (15-19)
             else tabItems[4].classList.add('active');                        // Conclusion
         }
 
