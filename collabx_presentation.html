@@ -411,6 +411,167 @@
                 font-size: 12px;
             }
         }
+        /* Process Flow Styles */
+        .process-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            position: relative;
+            margin-top: 60px;
+            gap: 20px;
+        }
+        .process-container::before {
+            content: '';
+            position: absolute;
+            top: 24px;
+            left: 50px;
+            right: 50px;
+            height: 2px;
+            background: #e2e8f0;
+            z-index: 0;
+        }
+        .process-step {
+            position: relative;
+            z-index: 1;
+            flex: 1;
+            text-align: center;
+        }
+        .step-icon-box {
+            width: 64px;
+            height: 64px;
+            background: white;
+            border: 3px solid var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 28px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        .process-step:hover .step-icon-box {
+            background: var(--primary-color);
+            color: white;
+            transform: scale(1.1);
+        }
+        .step-title {
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 12px;
+            font-size: 22px;
+        }
+        .step-desc {
+            font-size: 18px;
+            color: #475569;
+            line-height: 1.5;
+            background: #f8fafc;
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+        /* Challenge Badge Styles */
+        .challenge-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+        .badge-red { background: #fee2e2; color: #ef4444; }
+        .badge-orange { background: #ffedd5; color: #f97316; }
+        .badge-green { background: #dcfce7; color: #166534; }
+        .badge-blue { background: #dbeafe; color: #1e40af; }
+        .badge-purple { background: #f3e8ff; color: #6b21a8; }
+        
+        /* Tablet Animation Styles */
+        .tablet-screen {
+            width: 100%;
+            height: 100%;
+            background: #f8fafc;
+            position: relative;
+            overflow: hidden;
+        }
+        .app-header-mock {
+            height: 40px;
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            justify-content: space-between;
+        }
+        .map-area {
+            height: calc(100% - 100px);
+            background: #e2e8f0;
+            position: relative;
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .map-route {
+            position: absolute;
+            top: 50%;
+            left: 20%;
+            width: 0;
+            height: 4px;
+            background: #f97316;
+            transform-origin: left;
+            animation: drawRoute 2s ease-out forwards 1s;
+        }
+        @keyframes drawRoute {
+            to { width: 60%; }
+        }
+        .map-pin {
+            font-size: 24px;
+            position: absolute;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            opacity: 0;
+            transform: scale(0);
+        }
+        .pin-1 { top: 40%; left: 20%; animation-delay: 0.5s; }
+        .pin-2 { top: 60%; left: 50%; animation-delay: 1.5s; }
+        .pin-3 { top: 30%; left: 80%; animation-delay: 2.5s; }
+        
+        .click-effect {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid rgba(249, 115, 22, 0.5);
+            top: 60%; 
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            animation: ripple 1s linear infinite 2s;
+        }
+        @keyframes popIn {
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes ripple {
+            0% { transform: translate(-10px, -20px) scale(0); opacity: 1; }
+            100% { transform: translate(-10px, -20px) scale(2); opacity: 0; }
+        }
+        .bottom-nav-mock {
+            height: 60px;
+            background: white;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            font-size: 20px;
+            color: #94a3b8;
+        }
+        .nav-item-mock.active { color: var(--primary-color); }
+
+        .challenge-card {
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            border-top: 6px solid #ccc;
+        }
     </style>
 </head>
 <body>
@@ -418,14 +579,15 @@
     <!-- Header / Tab Bar -->
     <header class="app-header">
         <div class="logo">
-            CollabX<span>Route</span>
+            <img src="./claude-presentation-tool/assets/cx-icon.png" alt="CollabX Logo" style="height: 32px; margin-right: 8px;">
+            <img src="./claude-presentation-tool/assets/pty-icon.png" alt="Patanayont Logo" style="height: 32px;">
         </div>
         <nav class="tab-nav">
             <div class="tab-item active" onclick="goToSection(0)">Introduction</div>
             <div class="tab-item" onclick="goToSection(5)">Solution</div>
-            <div class="tab-item" onclick="goToSection(12)">User Journey</div>
-            <div class="tab-item" onclick="goToSection(17)">Business Impact</div>
-            <div class="tab-item" onclick="goToSection(22)">Conclusion</div>
+            <div class="tab-item" onclick="goToSection(10)">User Journey</div>
+            <div class="tab-item" onclick="goToSection(16)">Business Impact</div>
+            <div class="tab-item" onclick="goToSection(21)">Conclusion</div>
         </nav>
     </header>
 
@@ -438,153 +600,264 @@
         <article class="slide active">
             <div class="content-grid full-width">
                 <div>
-                    <h1 class="fade-in-up">CollabX-Route</h1>
-                    <h2 class="fade-in-up delay-200" style="color: var(--accent-color); margin-top: 0; font-weight: 500;">Driving Sales Performance & Profit Growth</h2>
+                    <h1 class="fade-in-up" style="font-size: 96px; line-height: 1.1;">Collab<span style="color: #F0943E;">X</span></h1>
+                    <h2 class="fade-in-up delay-200" style="color: var(--accent-color); margin-top: 10px; font-weight: 500;">Driving Sales Performance & Profit Growth</h2>
                     <p class="fade-in-up delay-300" style="font-size: 24px; margin-top: 24px;">Sales Enablement & Route Intelligence Platform</p>
                     <p class="fade-in-up delay-400" style="color: #64748b; margin-top: 40px; font-size: 16px;">เพิ่มประสิทธิภาพการขายและการทำกำไรด้วยการจัดการเส้นทางอัจฉริยะ</p>
                 </div>
             </div>
         </article>
 
-        <!-- Slide 2: Company Overview -->
-        <article class="slide">
-            <div class="content-grid">
-                <div class="text-col">
-                    <h2>Company Overview</h2>
-                    <p><strong>Company:</strong> Patanayont</p>
-                    <p><strong>Project:</strong> Partvans</p>
-                    <h3>Business Model Context</h3>
-                    <ul>
-                        <li>Automotive spare parts distribution (ธุรกิจจัดจำหน่ายอะไหล่ยนต์)</li>
-                        <li>Mobile sales model using EV vans (หน่วยรถขายเคลื่อนที่ EV)</li>
-                        <li><strong>Sales Role:</strong>
-                            <br>Order fulfillment + Active promotion + New customer development
-                        </li>
-                    </ul>
-                </div>
-                <div class="visual-area">
-                    <div style="text-align: center;">
-                        <span style="font-size: 64px; display: block; margin-bottom: 20px;">🚐 ⚡</span>
-                        <div style="font-weight: 700; color: var(--primary-color);">Mobile Sales EV</div>
-                    </div>
-                </div>
-            </div>
-        </article>
+        <!-- Slide 2: Company Overview (REMOVED) -->
+        <!-- <article class="slide"> ... </article> -->
 
-        <!-- Slide 3: Current Operations -->
+        <!-- Slide 2: Operational Workflow (Redesigned) -->
         <article class="slide">
             <div class="content-grid full-width">
-                <h2>Current Operational Workflow</h2>
-                <div class="card-container" style="margin-top: 40px;">
-                    <div class="card fade-in-up delay-100">
-                        <span class="card-icon">🌅</span>
-                        <h4>1. Morning</h4>
-                        <p>Assignment at HQ & Stock Loading (รับงานและสินค้า)</p>
+                <h2>Operational Workflow</h2>
+                <p style="text-align: center; color: #64748b; margin-top: -10px;">End-to-End Sales & Logistics Process</p>
+                
+                <div class="process-container">
+                    <!-- Step 1 -->
+                    <div class="process-step fade-in-up delay-100">
+                        <div class="step-icon-box">🏢</div>
+                        <div class="step-title">1. Preparation</div>
+                        <div class="step-desc">
+                            <strong>HQ Morning</strong><br>
+                            • Route Assignment<br>
+                            • Stock Loading (Min/Max)<br>
+                            • EV Check
+                        </div>
                     </div>
-                    <div class="card fade-in-up delay-200">
-                        <span class="card-icon">🚚</span>
-                        <h4>2. Field Sales</h4>
-                        <p>Execution of Route & Selling (ออกพื้นที่ขาย)</p>
+
+                    <!-- Step 2 -->
+                    <div class="process-step fade-in-up delay-200">
+                        <div class="step-icon-box">🚐</div>
+                        <div class="step-title">2. Execution</div>
+                        <div class="step-desc">
+                            <strong>Field Operations</strong><br>
+                            • Store Visitation<br>
+                            • Upsell / Promote<br>
+                            • On-Road Adjustments
+                        </div>
                     </div>
-                    <div class="card fade-in-up delay-300">
-                        <span class="card-icon">🌇</span>
-                        <h4>3. End of Day</h4>
-                        <p>Return to HQ, Reconcile & Report (สรุปยอดและส่งคืนสินค้า)</p>
+
+                    <!-- Step 3 -->
+                    <div class="process-step fade-in-up delay-300">
+                        <div class="step-icon-box">📝</div>
+                        <div class="step-title">3. Transaction</div>
+                        <div class="step-desc">
+                            <strong>Sales Completion</strong><br>
+                            • Payment Collection<br>
+                            • Slip Photo & Docs<br>
+                            • Tax Invoice Prep
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="process-step fade-in-up delay-400">
+                        <div class="step-icon-box">📊</div>
+                        <div class="step-title">4. Analysis</div>
+                        <div class="step-desc">
+                            <strong>Back Office</strong><br>
+                            • Stock Reconciliation<br>
+                            • Sales Feedback<br>
+                            • Route Planning
+                        </div>
                     </div>
                 </div>
             </div>
         </article>
 
-        <!-- Slide 4: Challenges -->
-        <article class="slide">
-            <div class="content-grid">
-                <div class="text-col">
-                    <h2>Current Challenges</h2>
-                    <h3>Pain Points</h3>
-                    <ul>
-                        <li><strong>Manual Routing:</strong> planned monthly, static, rigid (เส้นทางตายตัว ปรับเปลี่ยนยาก)</li>
-                        <li><strong>Inefficiency:</strong> Traffic delays & construction (รถติดและอุปสรรคหน้างาน)</li>
-                        <li><strong>Communication Gap:</strong> Manual coordination with customers (เสียเวลาสื่อสารนัดหมาย)</li>
-                        <li><strong>Missed Opportunities:</strong> Limited visibility of nearby potential stores (พลาดโอกาสร้านค้าใกล้เคียง)</li>
-                    </ul>
-                </div>
-                <div class="visual-area">
-                   <span style="font-size: 80px;">⚠️ ⏳</span>
-                </div>
-            </div>
-        </article>
-
-        <!-- Slide 5: Opportunity -->
+        <!-- Slide 3: Marketing Workflow (New) -->
         <article class="slide">
             <div class="content-grid full-width">
-                <h2>Growth Opportunity</h2>
-                <p style="text-align: center; max-width: 800px; margin: 0 auto; margin-bottom: 40px;">
-                    "Scaling performance without increasing headcount (เพิ่มยอดขายโดยไม่ต้องเพิ่มคน)"
-                </p>
-                <div class="card-container">
-                    <div class="card fade-in-up delay-100">
-                        <h4>Efficiency</h4>
-                        <p>Reduce time per transaction<br>Save 15-20 mins/deal</p>
+                <h2>Marketing Support Workflow</h2>
+                <p style="text-align: center; color: #64748b; margin-top: -10px;">LINE OA Customer Engagement (Human Touch)</p>
+                
+                <div class="process-container">
+                    <!-- Step 1 -->
+                    <div class="process-step fade-in-up delay-100">
+                        <div class="step-icon-box" style="border-color: #22c55e;">📲</div>
+                        <div class="step-title" style="color: #22c55e;">1. Connect</div>
+                        <div class="step-desc">
+                            <strong>Add Friend</strong><br>
+                            • Customer adds LINE OA<br>
+                            • Register Member<br>
+                            • Entry Point
+                        </div>
                     </div>
-                    <div class="card fade-in-up delay-200">
-                        <h4>Capacity</h4>
-                        <p>Increase daily visits<br>More deals per day</p>
+
+                    <!-- Step 2 -->
+                    <div class="process-step fade-in-up delay-200">
+                        <div class="step-icon-box" style="border-color: #22c55e;">💬</div>
+                        <div class="step-title" style="color: #22c55e;">2. Inquiry</div>
+                        <div class="step-desc">
+                            <strong>Customer Message</strong><br>
+                            • Wants to buy parts<br>
+                            • Asks for spec<br>
+                            • Order Request
+                        </div>
                     </div>
-                    <div class="card fade-in-up delay-300">
-                        <h4>Conversion</h4>
-                        <p>Real-time visibility<br>Faster closing</p>
+
+                    <!-- Step 3 -->
+                    <div class="process-step fade-in-up delay-300">
+                        <div class="step-icon-box" style="border-color: #22c55e;">🧑‍💻</div>
+                        <div class="step-title" style="color: #22c55e;">3. Response</div>
+                        <div class="step-desc">
+                            <strong>Marketing Team</strong><br>
+                            • Manual Reply (Human)<br>
+                            • Confirm Order<br>
+                            • Check Stock
+                        </div>
                     </div>
+
+                    <!-- Step 4 -->
+                    <div class="process-step fade-in-up delay-400">
+                        <div class="step-icon-box" style="border-color: #22c55e;">🎁</div>
+                        <div class="step-title" style="color: #22c55e;">4. Service</div>
+                        <div class="step-desc">
+                            <strong>Engagement</strong><br>
+                            • Offer Promotions<br>
+                            • Check Points/Rewards<br>
+                            • Close Sale
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- Slide 4: Challenges (Redesigned) -->
+        <article class="slide">
+            <div class="content-grid full-width">
+                <h2>Current Challenges</h2>
+                <p style="text-align: center; color: #64748b; margin-top: -10px;">Why we need to evolve (Pain Points)</p>
+                
+                <div class="card-container" style="align-items: stretch;">
+                    
+                    <!-- Case 1: Routing -->
+                    <div class="challenge-card fade-in-up delay-100" style="border-top-color: #f97316;">
+                        <div class="challenge-badge badge-orange">Case 1: Routing Logic</div>
+                        <div style="font-size: 48px; margin-bottom: 16px;">📍</div>
+                        <h3 style="color: #1e293b; margin-top: 0;">Sales Operations</h3>
+                        <ul style="text-align: left; margin-top: 20px;">
+                            <li><strong>Manual Planning:</strong><br>Fixed monthly routes (เส้นทางตายตัว)</li>
+                            <li><strong>Traffic & Delays:</strong><br>Unpredictable roadblocks (รถติด)</li>
+                            <li><strong>Missed Opportunities:</strong><br>Can't see nearby stores (พลาดร้านใกล้เคียง)</li>
+                        </ul>
+                    </div>
+
+                    <!-- Case 2: Service -->
+                    <div class="challenge-card fade-in-up delay-200" style="border-top-color: #f97316;">
+                        <div class="challenge-badge badge-orange">Case 2: Service System</div>
+                        <div style="font-size: 48px; margin-bottom: 16px;">💬</div>
+                        <h3 style="color: #1e293b; margin-top: 0;">LINE OA Support</h3>
+                        <ul style="text-align: left; margin-top: 20px;">
+                            <li><strong>Human Bottleneck:</strong><br>Marketing team replies manually (ตอบแชทเอง)</li>
+                            <li><strong>Slow Response:</strong><br>Customer waits for check stock (รอนาน)</li>
+                            <li><strong>Lost Sales:</strong><br>Missed upsell prompt (พลาดโอกาสเสนอโปร)</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </article>
+
+        <!-- Slide 5: Strategic Solutions (Redesigned) -->
+        <article class="slide">
+            <div class="content-grid full-width">
+                <h2>Strategic Solutions</h2>
+                <p style="text-align: center; color: #64748b; margin-top: -10px;">Scaling performance without increasing headcount</p>
+                
+                <div class="card-container" style="align-items: stretch; margin-top: 40px;">
+                    
+                    <!-- Solution 1 -->
+                    <div class="challenge-card fade-in-up delay-100" style="border-top-color: #22c55e;">
+                        <div class="challenge-badge badge-green">Solution 1: Efficiency</div>
+                        <div style="font-size: 40px; margin-bottom: 16px;">⚡️</div>
+                        <h4 style="font-size: 20px; margin: 0 0 10px 0; color: #1e293b;">Smart Routing</h4>
+                        <p style="font-size: 16px; color: #64748b;">Automated route planning reduces travel time.</p>
+                        <hr style="border: 0; border-top: 1px solid #f1f5f9; margin: 15px 0;">
+                        <strong style="color: #166534;">Save 15-20 mins/deal</strong>
+                    </div>
+
+                    <!-- Solution 2 -->
+                    <div class="challenge-card fade-in-up delay-200" style="border-top-color: #3b82f6;">
+                        <div class="challenge-badge badge-blue">Solution 2: Capacity</div>
+                        <div style="font-size: 40px; margin-bottom: 16px;">📈</div>
+                        <h4 style="font-size: 20px; margin: 0 0 10px 0; color: #1e293b;">Route Optimization</h4>
+                        <p style="font-size: 16px; color: #64748b;">Fit more stops into the same working hours.</p>
+                        <hr style="border: 0; border-top: 1px solid #f1f5f9; margin: 15px 0;">
+                        <strong style="color: #1e40af;">+2 Visits / Day</strong>
+                    </div>
+
+                    <!-- Solution 3 -->
+                    <div class="challenge-card fade-in-up delay-300" style="border-top-color: #a855f7;">
+                        <div class="challenge-badge badge-purple">Solution 3: Conversion</div>
+                        <div style="font-size: 40px; margin-bottom: 16px;">🤝</div>
+                        <h4 style="font-size: 20px; margin: 0 0 10px 0; color: #1e293b;">Real-time Data</h4>
+                        <p style="font-size: 16px; color: #64748b;">Instant info for faster decision making.</p>
+                        <hr style="border: 0; border-top: 1px solid #f1f5f9; margin: 15px 0;">
+                        <strong style="color: #6b21a8;">Faster Closing</strong>
+                    </div>
+
                 </div>
             </div>
         </article>
 
         <!-- --- SECTION 2: Solution --- -->
 
-        <!-- Slide 6: Solution Overview -->
+        <!-- Slide 6: Solution Overview (Animated Mockup) -->
         <article class="slide">
             <div class="content-grid">
                 <div class="text-col">
                     <h2>Introducing <span style="color: var(--primary-color);">CollabX_Route</span></h2>
                     <p class="highlight">Sales Enablement & Route Intelligence Platform</p>
-                    <ul>
-                        <li>Tablet Application for Sales Reps</li>
-                        <li>Real-time Route Optimization</li>
-                        <li>Nearby Customer Discovery</li>
-                        <li>Integrated Communication</li>
+                    <ul style="margin-top: 30px;">
+                        <li><strong>Live Route Tracking:</strong><br>See current location and innovative path finding.</li>
+                        <li><strong>Interactive Map:</strong><br>Tap to view store details and check-in.</li>
+                        <li><strong>Seamless Navigation:</strong><br>Integrated UI for sales workflow.</li>
                     </ul>
                 </div>
-                <div class="visual-area">
+                <div class="visual-area" style="background: transparent; box-shadow: none;">
                     <div class="mockup-tablet">
                          <div class="mockup-header"></div>
-                         <div class="mockup-body" style="display: flex; align-items: center; justify-content: center;">
-                             <div style="font-weight: 700; font-size: 24px; color: var(--primary-color);">CollabX_Route</div>
+                         <div class="tablet-screen">
+                             <!-- Header -->
+                             <div class="app-header-mock">
+                                 <span style="font-weight: 700; color: var(--primary-color);">CollabX</span>
+                                 <span style="font-size: 12px; color: #94a3b8;">User: Sales Rep 01</span>
+                             </div>
+                             <!-- Map -->
+                             <div class="map-area">
+                                 <div class="map-pin pin-1">🏬</div>
+                                 <div class="map-route"></div>
+                                 <div class="map-pin pin-2">🏬</div>
+                                 <div class="click-effect"></div> <!-- Tap animation -->
+                                 <div class="map-pin pin-3">🏠</div>
+                                 
+                                 <!-- Floating Search -->
+                                 <div style="position: absolute; top: 10px; left: 10px; right: 10px; background: white; padding: 8px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); font-size: 12px; color: #cbd5e1;">
+                                     🔍 Search Location...
+                                 </div>
+                             </div>
+                             <!-- Bottom Nav -->
+                             <div class="bottom-nav-mock">
+                                 <div class="nav-item-mock active">🗺️</div>
+                                 <div class="nav-item-mock">💬</div>
+                                 <div class="nav-item-mock">🛒</div>
+                                 <div class="nav-item-mock">⚙️</div>
+                             </div>
                          </div>
                     </div>
                 </div>
             </div>
         </article>
 
-         <!-- Slide 7: Value Prop -->
-        <article class="slide">
-             <div class="content-grid full-width">
-                <h2>Core Value Proposition</h2>
-                <div class="card-container" style="justify-content: center;">
-                     <div class="card fade-in-up delay-100" style="text-align: center; max-width: 400px;">
-                         <span class="card-icon">🚀</span>
-                         <h4>Maximize Sales Output</h4>
-                         <p>Enable Sales to perform at their peak every single day.</p>
-                     </div>
-                </div>
-                <div class="card-container" style="margin-top: 30px;">
-                    <div class="card">Productivity</div>
-                    <div class="card">Efficiency</div>
-                    <div class="card">Acquisition</div>
-                    <div class="card">Engagement</div>
-                </div>
-             </div>
-        </article>
+         <!-- Slide 5 (New): Value Prop (REMOVED) -->
+         <!-- <article class="slide"> ... </article> -->
 
-        <!-- Slide 8: Smart Routes -->
+        <!-- Slide 5: Smart Routes -->
         <article class="slide">
             <div class="content-grid">
                 <div class="text-col">
@@ -595,7 +868,6 @@
                         <li><strong>Smart Sequence:</strong> Re-orders stops for shortest path</li>
                         <li><strong>Adaptive:</strong> Adjusts recommendations daily</li>
                     </ul>
-                    <p style="font-size: 14px; color: #64748b; margin-top: 20px;">*Inspired by RouteXL logic</p>
                 </div>
                 <div class="visual-area">
                      <!-- Simplified Map Graphic -->
@@ -800,7 +1072,7 @@
 
         <!-- --- SECTION 4: Business Impact --- -->
 
-        <!-- Slide 18: Revenue Growth -->
+        <!-- Slide 16: Revenue Growth -->
         <article class="slide">
             <div class="content-grid">
                  <div class="text-col">
@@ -813,8 +1085,8 @@
                      </ul>
                       <div class="card fade-in-up delay-300" style="background: #f0fdf4; border-left-color: #22c55e;">
                          <h4>Impact Breakdown</h4>
-                         <p>+2 Stores/Day = <strong>$13,200 / month</strong></p>
-                         <p style="font-size: 14px; opacity: 0.8;">(Based on $300 avg revenue)</p>
+                         <p>+2 Stores/Day = <strong>High Growth 🚀</strong></p>
+                         <p style="font-size: 14px; opacity: 0.8;">(Significant increase in monthly revenue)</p>
                      </div>
                  </div>
                  <div class="visual-area">
@@ -826,7 +1098,7 @@
             </div>
         </article>
 
-        <!-- Slide 19: Upsell Impact -->
+        <!-- Slide 17: Upsell Impact -->
         <article class="slide">
             <div class="content-grid">
                  <div class="text-col">
@@ -839,7 +1111,7 @@
                       <div class="card fade-in-up delay-300" style="background: #f0fdf4; border-left-color: #22c55e;">
                          <h4>Impact Breakdown</h4>
                          <p>avg order increase 5-10%</p>
-                         <p><strong>+$3,960 - $7,920 / month</strong></p>
+                         <p><strong>Target: 5-10% Uplift 📈</strong></p>
                      </div>
                  </div>
                 <div class="visual-area">
@@ -848,7 +1120,7 @@
             </div>
         </article>
 
-        <!-- Slide 20: New Customer Impact -->
+        <!-- Slide 18: New Customer Impact -->
         <article class="slide">
             <div class="content-grid">
                 <div class="text-col">
@@ -862,7 +1134,7 @@
                      <div class="card fade-in-up delay-300" style="background: #eff6ff; border-left-color: #3b82f6;">
                          <h4>Recurring Value</h4>
                          <p>8 new stores x 4 visits =</p>
-                         <p><strong>+$9,600 / month</strong> (Cumulative)</p>
+                         <p><strong>Exponential Growth 🌟</strong> (Cumulative)</p>
                      </div>
                 </div>
                  <div class="visual-area">
@@ -871,7 +1143,7 @@
             </div>
         </article>
 
-        <!-- Slide 21: Cost Optimization -->
+        <!-- Slide 19: Cost Optimization -->
         <article class="slide">
             <div class="content-grid full-width">
                  <h2>Cost Optimization</h2>
@@ -895,7 +1167,7 @@
             </div>
         </article>
 
-        <!-- Slide 22: Scenario Summary -->
+        <!-- Slide 20: Scenario Summary -->
         <article class="slide">
             <div class="content-grid">
                 <div class="text-col">
@@ -904,12 +1176,12 @@
                     
                     <div class="card fade-in-up delay-100" style="margin-bottom: 20px;">
                         <h4>Conservative</h4>
-                        <p style="font-size: 24px; color: #64748b;">+ $17,000 / month</p>
+                        <p style="font-size: 24px; color: #64748b;">Level 1 Growth</p>
                     </div>
                     
                     <div class="card fade-in-up delay-300" style="background: #f0fdf4; border-left-color: #22c55e; transform: scale(1.05);">
                         <h4>Moderate (Target)</h4>
-                        <p style="font-size: 32px; color: #22c55e; font-weight: bold;">+ $37,000 / month</p>
+                        <p style="font-size: 32px; color: #22c55e; font-weight: bold;">Level 2 Growth 🚀</p>
                         <p style="font-size: 14px;">(New visits + Upsell + New Customers)</p>
                     </div>
                 </div>
@@ -969,18 +1241,16 @@
             </div>
         </article>
 
-        <!-- Slide 25: Closing -->
+        <!-- Slide 22: Q&A -->
         <article class="slide">
             <div class="content-grid full-width">
-                <h1 class="fade-in-up">Let's Scale Together.</h1>
+                <h1 class="fade-in-up">Q & A</h1>
                 <p class="fade-in-up delay-200" style="font-size: 24px; max-width: 800px; margin: 20px auto;">
-                    "CollabX_Route turns one van into a higher-performing profit engine."
+                    Thank you for your time.
                 </p>
-                <div class="fade-in-up delay-300" style="margin-top: 40px;">
-                    <button onclick="goToSection(0)" style="background-color: var(--accent-color); color: white; border: none; padding: 16px 32px; font-size: 18px; font-weight: 600; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 6px rgba(249, 115, 22, 0.3); transition: transform 0.2s;">
-                        Start Pilot Program
-                    </button>
-                    <p style="margin-top: 20px; font-size: 14px; color: #94a3b8;">Presentation by CollabX Team</p>
+                <div class="fade-in-up delay-300" style="margin-top: 40px; text-align: center;">
+                    <div style="font-size: 80px; margin-bottom: 20px;">🙋‍♂️❓</div>
+                    <p style="font-size: 18px; color: #94a3b8;">CollabX_Route Presentation</p>
                 </div>
             </div>
         </article>
@@ -992,7 +1262,7 @@
         <button class="nav-btn" onclick="prevSlide()" aria-label="Previous Slide">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
         </button>
-        <span class="page-indicator" id="pageIndicator">1 / 25</span>
+        <span class="page-indicator" id="pageIndicator">1 / 24</span>
         <button class="nav-btn" onclick="nextSlide()" aria-label="Next Slide">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
         </button>
@@ -1004,8 +1274,8 @@
         const pageIndicator = document.getElementById('pageIndicator');
         const tabItems = document.querySelectorAll('.tab-item');
         let currentSlide = 0;
-        const totalSlides = slides.length;
-
+        const totalSlides = slides.length; // 24 slides total now
+        
         function updateSlide(index) {
             // Bounds check
             if (index < 0) index = 0;
@@ -1046,10 +1316,10 @@
         function updateActiveTab() {
             tabItems.forEach(t => t.classList.remove('active'));
             
-            if (currentSlide < 5) tabItems[0].classList.add('active');      // Intro
-            else if (currentSlide < 12) tabItems[1].classList.add('active'); // Solution
-            else if (currentSlide < 17) tabItems[2].classList.add('active'); // Journey
-            else if (currentSlide < 22) tabItems[3].classList.add('active'); // Impact
+            if (currentSlide < 5) tabItems[0].classList.add('active');       // Intro (0-4)
+            else if (currentSlide < 10) tabItems[1].classList.add('active');  // Solution (5-9)
+            else if (currentSlide < 16) tabItems[2].classList.add('active'); // Journey (10-15)
+            else if (currentSlide < 21) tabItems[3].classList.add('active'); // Impact (16-20)
             else tabItems[4].classList.add('active');                        // Conclusion
         }
 
